@@ -1,0 +1,46 @@
+<header>
+  <mat-toolbar color="primary" class="header">
+    <div class="header-title">
+      <img src="assets/logo.png" class="logo" alt="Logo">
+      <span>Hydra Calculator</span>
+    </div>
+    <div class="header-links">
+      <a href="https://hydraledger.io/" target="_blank">Hydraledger</a>
+      <a href="https://wallet.hydraledger.io/" target="_blank">Hydra Wallet</a>
+      <a href="https://explorer.hydraledger.io/" target="_blank">Hydra Explorer</a>
+    </div>
+  </mat-toolbar>
+</header>
+<main id="main">
+  <span class="updatedDate">Updated 09.08.2022</span>
+
+  <mat-tab-group>
+    <mat-tab label="Amount">
+      <div class="add-amount">
+        <mat-form-field appearance="fill">
+          <mat-label>Amount</mat-label>
+          <input matInput [(ngModel)]="hydAmount" autocomplete="off" name="hydAmount">
+          <span matSuffix>Ħ</span>
+        </mat-form-field>
+        <button mat-flat-button (click)="setAmount()">Calculate</button>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Address">
+      <div class="add-amount">
+        <mat-form-field appearance="fill">
+          <mat-label>Address</mat-label>
+          <input matInput #message maxlength="34" [(ngModel)]="hydAddress" name="hydAddress">
+          <button *ngIf="hydAddress" matSuffix mat-icon-button (click)="hydAddress=''">
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-hint align="start">Hydra Wallet Address</mat-hint>
+          <mat-hint align="end">{{ message.value.length }} / 34</mat-hint>
+        </mat-form-field>
+        <button mat-flat-button (click)="setAmountByAddress()">Calculate</button>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+
+  <app-table [userHydAmount]="+hydAmount"></app-table>
+</main>

@@ -1,0 +1,53 @@
+<mat-form-field appearance="standard" class="filter">
+  <mat-label>Search</mat-label>
+  <input matInput (keyup)="applyFilter($event)" autocomplete="off" placeholder="Delegate" #input>
+</mat-form-field>
+
+<div class="mat-elevation-z8">
+  <table mat-table matSort [dataSource]="dataSource">
+
+    <ng-container matColumnDef="rank">
+      <th mat-header-cell mat-sort-header="rank" *matHeaderCellDef>Rank</th>
+      <td mat-cell *matCellDef="let element">{{ element.rank }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="delegate">
+      <th mat-header-cell mat-sort-header="delegate" *matHeaderCellDef>Delegate</th>
+      <td mat-cell *matCellDef="let element">{{ element.username }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="share">
+      <th mat-header-cell mat-sort-header="share" *matHeaderCellDef>Share</th>
+      <td mat-cell *matCellDef="let element">{{ element.share * 100 }}%</td>
+    </ng-container>
+
+    <ng-container matColumnDef="votes">
+      <th mat-header-cell mat-sort-header="votes" *matHeaderCellDef>Votes</th>
+      <td mat-cell *matCellDef="let element">{{ element.votes | number:'1.0-0' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="daily" class="mobile-hide">
+      <th mat-header-cell mat-sort-header="daily" *matHeaderCellDef>Daily rewards</th>
+      <td mat-cell *matCellDef="let element">{{ element.payment | number:'1.0-2' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="monthly">
+      <th mat-header-cell mat-sort-header="monthly" *matHeaderCellDef>Monthly rewards</th>
+      <td mat-cell *matCellDef="let element">{{ (element.payment * 30) | number:'1.0-2' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="yearly" class="mobile-hide">
+      <th mat-header-cell mat-sort-header="yearly" *matHeaderCellDef>Yearly rewards</th>
+      <td mat-cell *matCellDef="let element">{{ (element.payment * 365) | number:'1.0-2' }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="7">No delegates matching the filter "{{ input.value }}"</td>
+    </tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[10, 25, 53]"></mat-paginator>
+</div>

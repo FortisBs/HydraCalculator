@@ -1,0 +1,24 @@
+th.mat-header-cell, td.mat-cell {
+  padding-right: 20px;
+}
+
+.mat-row .mat-cell {
+  border-bottom: 1px solid transparent;
+  border-top: 1px solid transparent;
+}
+
+.mat-row:hover .mat-cell {
+  border-color: currentColor;
+}
+
+@media (max-width: 666px) {
+  tr, td, th {
+    font-size: 10px !important;
+    padding: 0 !important;
+    text-align: center !important;
+  }
+
+  .filter {
+    padding-left: 20px;
+  }
+}
