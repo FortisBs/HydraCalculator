@@ -76,7 +76,7 @@ export class TableComponent implements OnInit {
 
   private extendDelegate(arr: Delegate[]): Delegate[] {
     return arr.map((delegate: Delegate) => {
-      delegate.share = delShare[delegate.username];
+      delegate.share = delShare[delegate.username] ?? 0;
       delegate.votes = +delegate.votes / 10**8;
       delegate.payment = this.calcReward(delegate.votes, this.userHydAmount, delegate.share);
       return delegate;
