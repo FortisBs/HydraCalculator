@@ -11,14 +11,26 @@ th.mat-header-cell, td.mat-cell {
   border-color: currentColor;
 }
 
-@media (max-width: 666px) {
+@media (max-width: 700px) {
+  table {
+    width: 100%;
+  };
+
   tr, td, th {
-    font-size: 10px !important;
-    padding: 0 !important;
-    text-align: center !important;
+    font-size: 12px;
+    text-align: center;
   }
 
-  .filter {
-    padding-left: 20px;
+  th.mat-header-cell:first-of-type, td.mat-cell:first-of-type {
+    padding-left: 10px;
+  }
+
+  th.mat-header-cell:last-of-type, td.mat-cell:last-of-type {
+    padding-right: 10px;
+  }
+
+  th.mat-header-cell, td.mat-cell {
+    padding-right: 0;
   }
 }
+

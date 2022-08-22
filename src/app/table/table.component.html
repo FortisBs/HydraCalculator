@@ -31,12 +31,12 @@
       <td mat-cell *matCellDef="let element">{{ element.payment | number:'1.0-2' }}</td>
     </ng-container>
 
-    <ng-container matColumnDef="monthly">
+    <ng-container matColumnDef="monthly" *ngIf="!smallScreen">
       <th mat-header-cell mat-sort-header="monthly" *matHeaderCellDef>Monthly rewards</th>
       <td mat-cell *matCellDef="let element">{{ (element.payment * 30) | number:'1.0-2' }}</td>
     </ng-container>
 
-    <ng-container matColumnDef="yearly" class="mobile-hide">
+    <ng-container matColumnDef="yearly" class="mobile-hide" *ngIf="!smallScreen">
       <th mat-header-cell mat-sort-header="yearly" *matHeaderCellDef>Yearly rewards</th>
       <td mat-cell *matCellDef="let element">{{ (element.payment * 365) | number:'1.0-2' }}</td>
     </ng-container>

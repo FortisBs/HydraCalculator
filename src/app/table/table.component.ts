@@ -16,6 +16,7 @@ import { AmountService } from "../services/amount.service";
 export class TableComponent implements OnInit {
   displayedColumns: string[] = ['rank', 'delegate', 'share', 'votes', 'daily', 'monthly', 'yearly'];
   dataSource!: MatTableDataSource<Delegate>;
+  smallScreen!: boolean;
 
   @Input() userHydAmount!: number;
   @ViewChild(MatTable) table!: MatTable<Delegate[]>;
@@ -24,14 +25,16 @@ export class TableComponent implements OnInit {
 
   constructor(private delegatesService: DelegatesService,
               private amountService: AmountService
-  ) {}
+  ) {
+    this.smallScreen = window.screen.width < 700;
+    if (this.smallScreen) this.displayedColumns.splice(-2);
+  }
 
   ngOnInit(): void {
     this.delegatesService.getAll().subscribe((data: Delegate[]) => {
       this.dataSource = new MatTableDataSource(this.extendDelegate(data));
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-
       this.dataSource.sortData = (data: Delegate[], sort: MatSort) => {
         return data.sort((a: Delegate, b: Delegate) => {
           const isAsc = sort.direction === 'asc';
@@ -47,14 +50,13 @@ export class TableComponent implements OnInit {
           }
         });
       }
-
       this.dataSource.filterPredicate = (data: {username: string}, filter:string) => {
         return data.username.trim().toLowerCase().includes(filter);
       }
-      console.log(this.dataSource);
     });
 
     this.amountService.amount$.subscribe(data => this.recalculate(data));
+    console.log(this.dataSource);
   }
 
   applyFilter(event: Event): void {
@@ -83,7 +85,7 @@ export class TableComponent implements OnInit {
     });
   }
 
-  recalculate(amount: any): void {
+  private recalculate(amount: any): void {
     this.dataSource.data.forEach((delegate: Delegate) => {
       delegate.payment = this.calcReward(delegate.votes, amount, delegate.share);
     });
