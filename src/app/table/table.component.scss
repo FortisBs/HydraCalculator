@@ -11,6 +11,21 @@ th.mat-header-cell, td.mat-cell {
   border-color: currentColor;
 }
 
+.table-wrapper {
+  position: relative;
+  padding-top: 3px;
+}
+
+.upper-table {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.updatedDate {
+  color: #7B1FA2;
+}
+
 @media (max-width: 700px) {
   table {
     width: 100%;

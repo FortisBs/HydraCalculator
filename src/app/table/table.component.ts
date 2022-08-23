@@ -6,6 +6,7 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTable, MatTableDataSource } from "@angular/material/table";
 import { AmountService } from "../services/amount.service";
+import { NgxUiLoaderService } from "ngx-ui-loader";
 
 @Component({
   selector: 'app-table',
@@ -24,7 +25,8 @@ export class TableComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(private delegatesService: DelegatesService,
-              private amountService: AmountService
+              private amountService: AmountService,
+              private ngxLoader: NgxUiLoaderService
   ) {
     this.smallScreen = window.screen.width < 700;
     if (this.smallScreen) this.displayedColumns.splice(-2);
@@ -53,10 +55,18 @@ export class TableComponent implements OnInit {
       this.dataSource.filterPredicate = (data: {username: string}, filter:string) => {
         return data.username.trim().toLowerCase().includes(filter);
       }
+
+      console.log(this.dataSource.data);
     });
 
-    this.amountService.amount$.subscribe(data => this.recalculate(data));
-    console.log(this.dataSource);
+    this.amountService.amount$.subscribe(data => {
+      this.ngxLoader.startLoader('table-loader');
+      setTimeout(() => {
+        this.ngxLoader.stopLoader('table-loader');
+      }, 0);
+
+      this.recalculate(data);
+    });
   }
 
   applyFilter(event: Event): void {

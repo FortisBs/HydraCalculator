@@ -2,7 +2,11 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10px 16px 50px;
+  padding: 20px 16px 50px;
+}
+
+.slider {
+  width: 320px;
 }
 
 .header {
@@ -43,18 +47,28 @@ main {
   }
 }
 
-.updatedDate {
-  align-self: start;
-  color: #7B1FA2;
-
-}
-
 .add-amount {
   display: flex;
   gap: 20px;
+  height: 72px;
   overflow: hidden;
+
+  .add-amount-input {
+    width: 210px;
+  }
 
   button {
     height: 53px;
+    width: 90px;
+  }
+
+  .suffix {
+    display: block;
+    width: 24px !important;
+    text-align: center;
+  }
+
+  .hidden {
+    visibility: hidden;
   }
 }

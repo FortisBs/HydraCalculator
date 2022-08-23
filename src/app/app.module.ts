@@ -10,6 +10,8 @@ import { AppComponent } from './app.component';
 import { TableComponent } from './table/table.component';
 
 import { HydraPipe } from './pipes/hydra.pipe';
+import { NgxUiLoaderModule, NgxUiLoaderRouterModule } from "ngx-ui-loader";
+import { preloaderConfig } from "./utils/preloader-config";
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { HydraPipe } from './pipes/hydra.pipe';
     BrowserAnimationsModule,
     MaterialModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    NgxUiLoaderModule.forRoot(preloaderConfig),
+    NgxUiLoaderRouterModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

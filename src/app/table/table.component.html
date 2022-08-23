@@ -1,9 +1,13 @@
-<mat-form-field appearance="standard" class="filter">
-  <mat-label>Search</mat-label>
-  <input matInput (keyup)="applyFilter($event)" autocomplete="off" placeholder="Delegate" #input>
-</mat-form-field>
+<div class="upper-table">
+  <mat-form-field appearance="standard" class="filter">
+    <mat-label>Search</mat-label>
+    <input matInput (keyup)="applyFilter($event)" autocomplete="off" placeholder="Delegate" #input>
+  </mat-form-field>
 
-<div class="mat-elevation-z8">
+  <span class="updatedDate">Updated 19.08.2022</span>
+</div>
+
+<div class="table-wrapper mat-elevation-z8">
   <table mat-table matSort [dataSource]="dataSource">
 
     <ng-container matColumnDef="rank">
@@ -47,7 +51,13 @@
     <tr class="mat-row" *matNoDataRow>
       <td class="mat-cell" colspan="7">No delegates matching the filter "{{ input.value }}"</td>
     </tr>
-  </table>
 
+  </table>
   <mat-paginator [pageSizeOptions]="[10, 25, 53]"></mat-paginator>
+
+  <ngx-ui-loader [loaderId]="'table-loader'"
+                 overlayColor="rgba(48,48,48,0.3)"
+                 [hasProgressBar]="true"
+                 pbColor="#7b1fa2">
+  </ngx-ui-loader>
 </div>

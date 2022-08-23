@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AmountService } from "./services/amount.service";
 import { AddressService } from "./services/address.service";
 import { Wallet } from "./models/wallet.interface";
-import { FormControl } from "@angular/forms";
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +14,7 @@ export class AppComponent {
   hydAmount: string = '100000';
   hydAddress: string = '';
   isValidAddress: boolean = true;
+  opened!: boolean;
 
   constructor(private amountService: AmountService,
               private addressService: AddressService
