@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AmountService } from "./services/amount.service";
 import { AddressService } from "./services/address.service";
 import { Wallet } from "./models/wallet.interface";
-import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
 @Component({
   selector: 'app-root',
@@ -14,10 +14,10 @@ export class AppComponent {
   hydAmount: string = '100000';
   hydAddress: string = '';
   isValidAddress: boolean = true;
-  opened!: boolean;
 
   constructor(private amountService: AmountService,
-              private addressService: AddressService
+              private addressService: AddressService,
+              private dialog: MatDialog,
   ) {}
 
   setAmount() {
@@ -41,4 +41,7 @@ export class AppComponent {
     }
   }
 
+  openDialog(modal: any) {
+    this.dialog.open(modal);
+  }
 }

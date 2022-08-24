@@ -12,6 +12,7 @@ import { TableComponent } from './table/table.component';
 import { HydraPipe } from './pipes/hydra.pipe';
 import { NgxUiLoaderModule, NgxUiLoaderRouterModule } from "ngx-ui-loader";
 import { preloaderConfig } from "./utils/preloader-config";
+import { MatDialogModule } from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
@@ -19,16 +20,17 @@ import { preloaderConfig } from "./utils/preloader-config";
     TableComponent,
     HydraPipe
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MaterialModule,
-    HttpClientModule,
-    FormsModule,
-    NgxUiLoaderModule.forRoot(preloaderConfig),
-    NgxUiLoaderRouterModule,
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MaterialModule,
+        HttpClientModule,
+        FormsModule,
+        NgxUiLoaderModule.forRoot(preloaderConfig),
+        NgxUiLoaderRouterModule,
+        MatDialogModule,
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

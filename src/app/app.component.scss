@@ -72,3 +72,49 @@ main {
     visibility: hidden;
   }
 }
+
+footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 10px 16px;
+  gap: 10px;
+  background-color: #7B1FA2;
+
+  * {
+    margin: 0;
+  }
+}
+
+.info {
+  text-decoration: underline;
+  cursor: pointer;
+
+  &:hover {
+    color: #303030;
+  }
+}
+
+.donate {
+  height: 32px;
+  width: 32px;
+  line-height: 32px;
+
+  &:hover {
+    color: red;
+  }
+}
+
+.myTg {
+  color: white;
+
+  &:hover {
+    color: #7B1FA2;
+  }
+
+  &:focus-visible {
+    outline: none;
+  }
+}
+
