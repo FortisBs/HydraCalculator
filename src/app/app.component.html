@@ -2,7 +2,7 @@
 
 <header class="header">
   <div class="header-title">
-    <img src="assets/logo.png" class="logo" alt="Logo">
+    <img src="assets/logo.png" (click)="secretDialog(modalSecret)" class="logo" alt="Logo" >
     <span>Hydra Calculator</span>
   </div>
   <div class="header-links">
@@ -69,12 +69,30 @@
 
 <ng-template #modalDonate>
   <div mat-dialog-content>
-    <p>If you would like to support the development and maintenance of this tool
-      or just want to send me some HYD I would greatly appreciate it.</p>
+    <p>If you would like to support the development and maintenance of this tool,
+      here is the HYD address, I would greatly appreciate it.</p>
     <p>My HYD address: hL6khm9bNfD8TbowVSjry7yQnjmh85JQsJ</p>
     <p>Thank You and have a great day :)</p>
   </div>
   <div mat-dialog-actions align="end">
     <button mat-flat-button mat-dialog-close color="primary">Close</button>
+  </div>
+</ng-template>
+
+<ng-template #modalSecret>
+  <h1 mat-dialog-title>Change share rate</h1>
+  <div mat-dialog-content>
+    <mat-form-field appearance="fill">
+      <mat-label>Delegate</mat-label>
+      <input matInput [(ngModel)]="delName">
+    </mat-form-field><br>
+    <mat-form-field appearance="fill">
+      <mat-label>Share rate</mat-label>
+      <input matInput [(ngModel)]="delShare" placeholder="Example: 0.8">
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-flat-button color="primary" (click)="secretUpdate()">Save</button>
+    <button mat-flat-button mat-dialog-close color="primary">Cancel</button>
   </div>
 </ng-template>
