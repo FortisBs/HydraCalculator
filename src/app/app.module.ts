@@ -8,7 +8,6 @@ import { MaterialModule } from "./material/material.module";
 import { NgxUiLoaderModule, NgxUiLoaderRouterModule } from "ngx-ui-loader";
 import { preloaderConfig } from "./utils/preloader-config";
 import { AngularFireModule } from "@angular/fire/compat";
-import { environment } from "../environments/environment";
 
 import { AppComponent } from './app.component';
 import { TableComponent } from './components/table/table.component';
@@ -31,7 +30,6 @@ import { FooterComponent } from './components/footer/footer.component';
       FormsModule,
       NgxUiLoaderModule.forRoot(preloaderConfig),
       NgxUiLoaderRouterModule,
-      AngularFireModule.initializeApp(environment.firebaseConfig),
     ],
   providers: [],
   bootstrap: [AppComponent]
