@@ -1,0 +1,36 @@
+<footer>
+  <p class="createdBy">Created by a community member</p>
+  <p class="info" (click)="openDialog(modalInfo)">Info for delegates</p>
+  <p>Donate
+    <button class="donate" mat-icon-button (click)="openDialog(modalDonate)">
+      <mat-icon>favorite</mat-icon>
+    </button>
+  </p>
+</footer>
+
+<ng-template #modalInfo>
+  <h1 mat-dialog-title autofocus>Dear Delegates,</h1>
+  <div mat-dialog-content>
+    <p>Since the share rate data is not calculated automatically,
+      please contact me on <a href="https://t.me/FortisBs" target="_blank" class="myTg">Telegram</a> in case you are going to change your share rate
+      or if you notice that your data in the table is incorrect,
+      so that I can make the necessary changes to the table.
+    </p>
+    <p>Thank You and have a great day :)</p>
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-flat-button mat-dialog-close color="primary">Close</button>
+  </div>
+</ng-template>
+
+<ng-template #modalDonate>
+  <div mat-dialog-content>
+    <p>If you would like to support the development and maintenance of this tool,
+      here is the HYD address below, I would greatly appreciate it.</p>
+    <p>My HYD address: hL6khm9bNfD8TbowVSjry7yQnjmh85JQsJ</p>
+    <p>Thank You and have a great day :)</p>
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-flat-button mat-dialog-close color="primary">Close</button>
+  </div>
+</ng-template>

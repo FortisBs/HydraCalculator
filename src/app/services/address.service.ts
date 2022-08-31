@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { map, Observable } from "rxjs";
-import { Wallet } from "../models/wallet.interface";
+import { IWallet } from "../models/wallet.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +11,8 @@ export class AddressService {
 
   constructor(private http: HttpClient) {}
 
-  getWallet(address: string): Observable<Wallet> {
-    return this.http.get<{data: Wallet}>(this.url + address).pipe(
+  getWallet(address: string): Observable<IWallet> {
+    return this.http.get<{data: IWallet}>(this.url + address).pipe(
       map(response => response.data)
     );
   }

@@ -1,4 +1,4 @@
-export interface Wallet {
+export interface IWallet {
   address: string;
   publicKey: string;
   nonce: string;

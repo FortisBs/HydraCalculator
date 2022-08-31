@@ -25,7 +25,7 @@ export interface Forged {
   total: string;
 }
 
-export interface Delegate {
+export interface IDelegate {
   payment?: any;
   share?: any;
   username: string;

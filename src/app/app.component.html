@@ -1,98 +1,11 @@
 <ngx-ui-loader></ngx-ui-loader>
 
-<header class="header">
-  <div class="header-title">
-    <img src="assets/logo.png" (click)="secretDialog(modalSecret)" class="logo" alt="Logo" >
-    <span>Hydra Calculator</span>
-  </div>
-  <div class="header-links">
-    <a href="https://hydraledger.io/" target="_blank">Hydraledger</a>
-    <a href="https://wallet.hydraledger.io/" target="_blank">Hydra Wallet</a>
-    <a href="https://explorer.hydraledger.io/" target="_blank">Hydra Explorer</a>
-  </div>
-</header>
+<div id="container">
+  <app-header></app-header>
 
-<main id="main">
-  <mat-tab-group mat-stretch-tabs class="slider">
-    <mat-tab label="Amount">
-      <div class="add-amount">
-        <mat-form-field appearance="fill" class="add-amount-input">
-          <mat-label>Amount</mat-label>
-          <input matInput [(ngModel)]="hydAmount" autocomplete="off" name="hydAmount">
-          <span matSuffix class="suffix">Ħ</span>
-        </mat-form-field>
-        <button mat-flat-button (click)="setAmount()" color="primary">Calculate</button>
-      </div>
-    </mat-tab>
+  <main id="main">
+    <router-outlet></router-outlet>
+  </main>
 
-    <mat-tab label="Address">
-      <div class="add-amount">
-        <mat-form-field appearance="fill" class="add-amount-input">
-          <mat-label>Address</mat-label>
-          <input matInput maxlength="34" [(ngModel)]="hydAddress" name="hydAddress" placeholder="HYD Wallet Address">
-          <button matSuffix mat-icon-button (click)="hydAddress=''" class="suffix" [class.hidden]="!hydAddress">
-            <mat-icon>close</mat-icon>
-          </button>
-        </mat-form-field>
-        <button mat-flat-button (click)="setAmountByAddress()" color="primary">Calculate</button>
-      </div>
-    </mat-tab>
-  </mat-tab-group>
-
-  <app-table [userHydAmount]="+hydAmount"></app-table>
-</main>
-
-<footer>
-  <p class="createdBy">Created by a community member</p>
-  <p class="info" (click)="openDialog(modalInfo)">Info for delegates</p>
-  <p>Donate
-    <button class="donate" mat-icon-button (click)="openDialog(modalDonate)">
-      <mat-icon>favorite</mat-icon>
-    </button>
-  </p>
-</footer>
-
-<ng-template #modalInfo>
-  <h1 mat-dialog-title autofocus>Dear Delegates,</h1>
-  <div mat-dialog-content>
-    <p>Since the share rate data is not calculated automatically,
-      please contact me on <a href="https://t.me/FortisBs" target="_blank" class="myTg">Telegram</a> in case you are going to change your share rate
-      or if you notice that your data in the table is incorrect,
-      so that I can make the necessary changes to the table.
-    </p>
-    <p>Thank You and have a great day :)</p>
-  </div>
-  <div mat-dialog-actions align="end">
-    <button mat-flat-button mat-dialog-close color="primary">Close</button>
-  </div>
-</ng-template>
-
-<ng-template #modalDonate>
-  <div mat-dialog-content>
-    <p>If you would like to support the development and maintenance of this tool,
-      here is the HYD address, I would greatly appreciate it.</p>
-    <p>My HYD address: hL6khm9bNfD8TbowVSjry7yQnjmh85JQsJ</p>
-    <p>Thank You and have a great day :)</p>
-  </div>
-  <div mat-dialog-actions align="end">
-    <button mat-flat-button mat-dialog-close color="primary">Close</button>
-  </div>
-</ng-template>
-
-<ng-template #modalSecret>
-  <h1 mat-dialog-title>Change share rate</h1>
-  <div mat-dialog-content>
-    <mat-form-field appearance="fill">
-      <mat-label>Delegate</mat-label>
-      <input matInput [(ngModel)]="delName">
-    </mat-form-field><br>
-    <mat-form-field appearance="fill">
-      <mat-label>Share rate</mat-label>
-      <input matInput [(ngModel)]="delShare" placeholder="Example: 0.8">
-    </mat-form-field>
-  </div>
-  <div mat-dialog-actions align="end">
-    <button mat-flat-button color="primary" (click)="secretUpdate()">Save</button>
-    <button mat-flat-button mat-dialog-close color="primary">Cancel</button>
-  </div>
-</ng-template>
+  <app-footer></app-footer>
+</div>

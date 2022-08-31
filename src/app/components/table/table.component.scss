@@ -1,0 +1,82 @@
+// Styles for calculation slider
+.slider {
+  width: 320px;
+  margin: 0 auto;
+}
+
+.add-amount {
+  display: flex;
+  gap: 20px;
+  height: 72px;
+  overflow: hidden;
+
+  .add-amount-input {
+    width: 210px;
+  }
+
+  button {
+    height: 53px;
+    width: 90px;
+  }
+
+  .suffix {
+    display: block;
+    width: 24px !important;
+    text-align: center;
+  }
+
+  .hidden {
+    visibility: hidden;
+  }
+}
+
+// Styles for filter and "update" text
+.upper-table {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .updatedDate {
+    color: #7B1FA2;
+  }
+}
+
+// Styles for table
+th.mat-header-cell, td.mat-cell {
+  padding-right: 20px;
+}
+
+// Hover effect for table rows
+.mat-row  {
+  .mat-cell {
+    border-bottom: 1px solid transparent;
+    border-top: 1px solid transparent;
+  }
+
+  &:hover .mat-cell {
+    border-color: white;
+  }
+}
+
+@media (max-width: 700px) {
+  table {
+    width: 100%;
+  };
+
+  tr, td, th {
+    font-size: 12px;
+    text-align: center;
+  }
+
+  th.mat-header-cell:first-of-type, td.mat-cell:first-of-type {
+    padding-left: 10px;
+  }
+
+  th.mat-header-cell:last-of-type, td.mat-cell:last-of-type {
+    padding-right: 10px;
+  }
+
+  th.mat-header-cell, td.mat-cell {
+    padding-right: 0;
+  }
+}

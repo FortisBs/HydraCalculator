@@ -1,13 +1,39 @@
+<mat-tab-group mat-stretch-tabs class="slider">
+  <mat-tab label="Amount">
+    <div class="add-amount">
+      <mat-form-field appearance="fill" class="add-amount-input">
+        <mat-label>Amount</mat-label>
+        <input matInput [(ngModel)]="hydAmount" autocomplete="off" name="hydAmount">
+        <span matSuffix class="suffix">Ħ</span>
+      </mat-form-field>
+      <button mat-flat-button (click)="recalculate()" color="primary">Calculate</button>
+    </div>
+  </mat-tab>
+
+  <mat-tab label="Address">
+    <div class="add-amount">
+      <mat-form-field appearance="fill" class="add-amount-input">
+        <mat-label>Address</mat-label>
+        <input matInput maxlength="34" [(ngModel)]="hydAddress" name="hydAddress" placeholder="HYD Wallet Address">
+        <button matSuffix mat-icon-button (click)="hydAddress=''" class="suffix" [class.hidden]="!hydAddress">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <button mat-flat-button (click)="calcByAddress()" color="primary">Calculate</button>
+    </div>
+  </mat-tab>
+</mat-tab-group>
+
 <div class="upper-table">
   <mat-form-field appearance="standard" class="filter">
     <mat-label>Search</mat-label>
-    <input matInput (keyup)="applyFilter($event)" autocomplete="off" placeholder="Delegate" #input>
+    <input matInput (keyup)="applyFilter($event)" autocomplete="off" placeholder="Delegate" #filter>
   </mat-form-field>
 
   <span class="updatedDate">Updated 26.08.2022</span>
 </div>
 
-<div class="table-wrapper mat-elevation-z8">
+<div class="mat-elevation-z8">
   <table mat-table matSort [dataSource]="dataSource">
 
     <ng-container matColumnDef="rank">
@@ -49,7 +75,7 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
     <tr class="mat-row" *matNoDataRow>
-      <td class="mat-cell" colspan="7">No delegates matching the filter "{{ input.value }}"</td>
+      <td class="mat-cell" colspan="7">No delegates matching the filter "{{ filter.value }}"</td>
     </tr>
 
   </table>
