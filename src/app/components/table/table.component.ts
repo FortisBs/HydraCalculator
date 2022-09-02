@@ -18,7 +18,7 @@ import { delShareData } from "../../utils/del-share";
 export class TableComponent implements OnInit {
   displayedColumns: string[] = ['rank', 'delegate', 'share', 'votes', 'daily', 'monthly', 'yearly'];
   dataSource!: MatTableDataSource<IDelegate>;
-  hydAmount: string = '100000';
+  hydAmount: number = 100000;
   hydAddress: string = '';
   isValidAddress: boolean = true;
   smallScreen!: boolean;
@@ -44,7 +44,7 @@ export class TableComponent implements OnInit {
       this.dataSource.filterPredicate = (data: {username: string}, filter:string) => {
         return data.username.trim().toLowerCase().includes(filter);
       }
-      console.log(this.dataSource.data);
+      // console.log(this.dataSource.data);
     });
   }
 
@@ -55,7 +55,7 @@ export class TableComponent implements OnInit {
     const secInOneDay = 86400;
     const hydsPerDay = (secInOneDay / blockTime) * blockReward;
     const delegateForgesPerDay = (hydsPerDay / delegates) * share;
-    const userPartInVotes = +this.hydAmount / votes;
+    const userPartInVotes = this.hydAmount / votes;
 
     return delegateForgesPerDay * userPartInVotes;
   }
@@ -88,7 +88,7 @@ export class TableComponent implements OnInit {
 
     try {
       this.addressService.getWallet(this.hydAddress).subscribe((wallet: IWallet) => {
-        this.hydAmount = wallet.balance.slice(0, 6);
+        this.hydAmount = +wallet.balance.slice(0, 6);
         this.isValidAddress = true;
         this.recalculate();
       });

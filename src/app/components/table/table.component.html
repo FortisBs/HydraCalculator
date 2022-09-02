@@ -3,7 +3,7 @@
     <div class="add-amount">
       <mat-form-field appearance="fill" class="add-amount-input">
         <mat-label>Amount</mat-label>
-        <input matInput [(ngModel)]="hydAmount" autocomplete="off" name="hydAmount">
+        <input matInput type="number" [(ngModel)]="hydAmount" autocomplete="off" name="hydAmount">
         <span matSuffix class="suffix">Ħ</span>
       </mat-form-field>
       <button mat-flat-button (click)="recalculate()" color="primary">Calculate</button>
@@ -33,7 +33,7 @@
   <span class="updatedDate">Updated 26.08.2022</span>
 </div>
 
-<div class="mat-elevation-z8">
+<div class="mat-elevation-z8 table-wrapper">
   <table mat-table matSort [dataSource]="dataSource">
 
     <ng-container matColumnDef="rank">
@@ -84,6 +84,6 @@
   <ngx-ui-loader [loaderId]="'table-loader'"
                  overlayColor="rgba(48,48,48,0.3)"
                  [hasProgressBar]="true"
-                 pbColor="#7b1fa2">
+                 pbColor="#673AB7">
   </ngx-ui-loader>
 </div>

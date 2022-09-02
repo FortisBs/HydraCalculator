@@ -1,11 +1,15 @@
+.header-wrapper {
+  height: auto;
+  display: block;
+}
+
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  padding: 10px 16px;
+  padding: 10px 0;
   row-gap: 10px;
-  background-color: #7B1FA2;
 
   &-title {
     display: flex;
@@ -32,6 +36,14 @@
       &:hover {
         color: #303030;
       }
+    }
+  }
+
+  .theme-icon {
+    cursor: pointer;
+
+    &:hover {
+      transform: scaleX(-1);
     }
   }
 }

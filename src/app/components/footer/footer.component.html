@@ -1,12 +1,14 @@
-<footer>
-  <p class="createdBy">Created by a community member</p>
-  <p class="info" (click)="openDialog(modalInfo)">Info for delegates</p>
-  <p>Donate
-    <button class="donate" mat-icon-button (click)="openDialog(modalDonate)">
-      <mat-icon>favorite</mat-icon>
-    </button>
-  </p>
-</footer>
+<mat-toolbar color="primary" class="footer-wrapper">
+  <footer>
+    <p class="createdBy">Created by a community member</p>
+    <p class="info" (click)="openDialog(modalInfo)">Info for delegates</p>
+    <p>Donate
+      <button class="donate" mat-icon-button (click)="openDialog(modalDonate)">
+        <mat-icon>favorite</mat-icon>
+      </button>
+    </p>
+  </footer>
+</mat-toolbar>
 
 <ng-template #modalInfo>
   <h1 mat-dialog-title autofocus>Dear Delegates,</h1>

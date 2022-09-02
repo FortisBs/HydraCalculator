@@ -1,11 +1,16 @@
+.footer-wrapper {
+  height: auto;
+  display: block;
+  font-size: 16px;
+}
+
 footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  padding: 10px 16px;
+  padding: 10px 0;
   gap: 10px;
-  background-color: #7B1FA2;
 
   * {
     margin: 0;
@@ -32,10 +37,10 @@ footer {
 }
 
 .myTg {
-  color: white;
+  color: currentColor;
 
   &:hover {
-    color: #7B1FA2;
+    color: #673ab7;
   }
 
   &:focus-visible {

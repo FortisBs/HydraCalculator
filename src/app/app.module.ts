@@ -13,6 +13,7 @@ import { AppComponent } from './app.component';
 import { TableComponent } from './components/table/table.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 
 @NgModule({
   declarations: [
@@ -21,16 +22,17 @@ import { FooterComponent } from './components/footer/footer.component';
     HeaderComponent,
     FooterComponent,
   ],
-    imports: [
-      BrowserModule,
-      AppRoutingModule,
-      BrowserAnimationsModule,
-      MaterialModule,
-      HttpClientModule,
-      FormsModule,
-      NgxUiLoaderModule.forRoot(preloaderConfig),
-      NgxUiLoaderRouterModule,
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MaterialModule,
+    HttpClientModule,
+    FormsModule,
+    NgxUiLoaderModule.forRoot(preloaderConfig),
+    NgxUiLoaderRouterModule,
+    MatSlideToggleModule,
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })

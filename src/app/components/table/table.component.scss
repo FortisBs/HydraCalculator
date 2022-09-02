@@ -37,13 +37,17 @@
   align-items: center;
 
   .updatedDate {
-    color: #7B1FA2;
+    color: #673ab7;
   }
 }
 
 // Styles for table
 th.mat-header-cell, td.mat-cell {
   padding-right: 20px;
+}
+
+.table-wrapper {
+  position: relative;
 }
 
 // Hover effect for table rows
@@ -54,8 +58,22 @@ th.mat-header-cell, td.mat-cell {
   }
 
   &:hover .mat-cell {
-    border-color: white;
+    border-color: currentColor;
   }
+}
+
+.mat-paginator-light {
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.mat-paginator-dark {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 @media (max-width: 700px) {
