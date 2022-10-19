@@ -31,6 +31,7 @@ export const delShareData: any = {
   'pie_o_my': 0.8,
   '4influencermarketing': 0,
   'abbaforever': 0,
+  'hnida': 0.75,
   'hodl_hydra': 0,
   'freegermansociety_2': 0,
   'catchmeifyoucan': 0,
