@@ -1,0 +1,74 @@
+<button mat-raised-button (click)="goToDashboard()"
+        color="primary" class="back-btn"
+>< Back to Dashboard</button>
+
+<mat-card class="mat-elevation-z8 reg-container">
+  <mat-card-title>Registration</mat-card-title>
+  <mat-card-subtitle>Please note that only delegates can register here</mat-card-subtitle>
+  <mat-card-content>
+    <mat-stepper orientation="vertical" linear="true" #stepper>
+
+      <!-- First step - delegate data -->
+      <mat-step [stepControl]="delegateForm" editable="false">
+        <form [formGroup]="delegateForm">
+
+          <ng-template matStepLabel>Add own Delegate</ng-template>
+          <mat-form-field appearance="fill">
+            <mat-label>Username</mat-label>
+            <input matInput formControlName="username" placeholder="Delegate's username">
+          </mat-form-field><br>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Share rate</mat-label>
+            <input matInput type="number" formControlName="shareRate" placeholder="Example 0.85">
+          </mat-form-field>
+
+          <div>
+            <button mat-flat-button color="primary" [disabled]="findDelegatePending"
+                    (click)="findDelegate(stepper)"
+            >Next</button>
+            <span class="error" *ngIf="delegateErrorMessage">{{ delegateErrorMessage }}</span>
+          </div>
+
+        </form>
+      </mat-step>
+
+      <!-- Second step - confirmation -->
+      <mat-step [stepControl]="transactionForm" editable="false">
+        <form [formGroup]="transactionForm">
+
+          <ng-template matStepLabel>Confirm a Delegate</ng-template>
+          <p>
+            Please create a transaction with any amount to
+            the following address - hL6khm9bNfD8TbowVSjry7yQnjmh85JQsJ,
+            with the secret key in Vendor field - {{ secretKey }}
+          </p>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Transaction ID</mat-label>
+            <input matInput formControlName="transactionId">
+          </mat-form-field>
+
+          <div>
+            <button mat-flat-button color="primary" [disabled]="transactionPending"
+                    (click)="confirmTransaction(stepper)"
+            >Next</button>
+            <span class="error" *ngIf="transactionErrorMessage">{{ transactionErrorMessage }}</span>
+          </div>
+
+        </form>
+      </mat-step>
+
+      <!-- Third step - finish -->
+      <mat-step editable="false">
+        <ng-template matStepLabel>Done</ng-template>
+        <p>Delegate successfully added</p>
+
+        <div>
+          <button mat-flat-button color="accent" (click)="goToDashboard()">Done</button>
+        </div>
+      </mat-step>
+
+    </mat-stepper>
+  </mat-card-content>
+</mat-card>

@@ -1,4 +1,5 @@
 import { NgxUiLoaderConfig } from "ngx-ui-loader";
+import { Theme } from "../shared/services/theme.service";
 
 export const preloaderConfig: NgxUiLoaderConfig = {
   "blur": 5,
@@ -12,14 +13,10 @@ export const preloaderConfig: NgxUiLoaderConfig = {
   "minTime": 700
 }
 
-function getColor(): string {
-  if (localStorage.getItem('user-theme') === 'light-theme') {
-    return '#FAFAFA';
-  }
+export function getColor(): string {
+  const userTheme = localStorage.getItem('user-theme') as Theme ?? 'light-theme';
+  const lightColor = '#FAFAFA';
+  const darkColor = '#303030';
 
-  if (localStorage.getItem('user-theme') === 'dark-theme') {
-    return '#303030';
-  }
-
-  return '#FAFAFA';
+  return userTheme === 'light-theme' ? lightColor : darkColor;
 }

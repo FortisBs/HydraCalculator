@@ -1,0 +1,51 @@
+.upper-table {
+  .suffix {
+    display: block;
+    width: 24px !important;
+    text-align: center;
+  }
+
+  .hidden {
+    visibility: hidden;
+  }
+}
+
+th.mat-header-cell, td.mat-cell {
+  padding-right: 20px;
+}
+
+.table {
+  position: relative;
+  overflow: auto;
+}
+
+.mat-row  {
+  .mat-cell {
+    border-bottom: 1px solid transparent;
+    border-top: 1px solid transparent;
+  }
+
+  &:hover .mat-cell {
+    border-color: currentColor;
+  }
+}
+
+.mat-paginator-light {
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.mat-paginator-dark {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.check-mark {
+  height: 15px;
+  width: 15px;
+  vertical-align: middle;
+}
+
+@media (max-width: 700px) {
+  .table {
+    width: calc(100vw - 50px);
+  }
+}

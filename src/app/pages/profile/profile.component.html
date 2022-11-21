@@ -1,0 +1,10 @@
+<div [ngSwitch]="activeFeature">
+  <app-dashboard *ngSwitchCase="'dashboard'"
+                 (openAddDelegate)="toggleFeature($event)"
+                 [ownDelegates]="userDelegates">
+  </app-dashboard>
+  <app-add-delegate *ngSwitchCase="'addDelegate'"
+                    (openDashboard)="toggleFeature($event)"
+                    [ownDelegates]="userDelegates">
+  </app-add-delegate>
+</div>

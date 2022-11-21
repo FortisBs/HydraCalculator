@@ -1,0 +1,25 @@
+<mat-tab-group mat-stretch-tabs class="slider">
+  <mat-tab label="Amount">
+    <div class="add-amount">
+      <mat-form-field appearance="fill" class="add-amount-input">
+        <mat-label>Amount</mat-label>
+        <input matInput type="number" [(ngModel)]="hydAmount" autocomplete="off" name="hydAmount">
+        <span matSuffix class="suffix">Ħ</span>
+      </mat-form-field>
+      <button mat-flat-button (click)="recalculate()" color="primary">Calculate</button>
+    </div>
+  </mat-tab>
+
+  <mat-tab label="Address">
+    <div class="add-amount">
+      <mat-form-field appearance="fill" class="add-amount-input">
+        <mat-label>Address</mat-label>
+        <input matInput maxlength="34" [(ngModel)]="hydAddress" name="hydAddress" placeholder="HYD Wallet Address">
+        <button matSuffix mat-icon-button (click)="hydAddress=''" class="suffix" [class.hidden]="!hydAddress">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <button mat-flat-button (click)="calcByAddress()" color="primary">Calculate</button>
+    </div>
+  </mat-tab>
+</mat-tab-group>

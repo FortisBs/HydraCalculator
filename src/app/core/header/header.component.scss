@@ -1,0 +1,64 @@
+.header-wrapper {
+  height: auto;
+  display: block;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 10px 0;
+  column-gap: 20px;
+
+  a {
+    color: white;
+    text-decoration: none;
+  }
+
+  &-title {
+    font-size: 20px;
+
+    .logo {
+      height: 32px;
+      margin-right: 20px;
+      vertical-align: middle;
+    }
+
+    a {
+      vertical-align: middle;
+    }
+  }
+
+  &-links {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 20px;
+
+    a {
+      font-size: 16px;
+
+      &:hover {
+        color: #303030;
+      }
+    }
+
+    span {
+      margin: 0 10px;
+    }
+  }
+
+  .theme-icon {
+    vertical-align: middle;
+    cursor: pointer;
+
+    &:hover {
+      transform: scaleX(-1);
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .header {
+    justify-content: center;
+  }
+}

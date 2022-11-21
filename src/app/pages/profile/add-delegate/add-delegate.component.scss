@@ -1,0 +1,31 @@
+.back-btn {
+  margin-bottom: 20px;
+}
+
+.mat-stepper-vertical {
+  margin-top: 8px;
+}
+
+.mat-card-subtitle:not(:first-child) {
+  margin: 0;
+}
+
+form {
+  margin-top: 18px;
+}
+
+.reg-container {
+  width: 350px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.error {
+  margin-left: 10px;
+  font-size: 14px;
+  color: red;
+}
