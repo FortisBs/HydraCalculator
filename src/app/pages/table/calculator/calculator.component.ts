@@ -90,7 +90,7 @@ export class CalculatorComponent implements OnInit, OnDestroy {
 
     this.delegatesService.getWallet(this.hydAddress).subscribe({
       next: (wallet: IWallet) => {
-        this.hydAmount = +wallet.balance.slice(0, 6);
+        this.hydAmount = +wallet.balance.slice(0, -8);
         this.isValidAddress = true;
         this.recalculate();
       },
