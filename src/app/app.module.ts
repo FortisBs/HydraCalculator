@@ -1,12 +1,10 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from "@angular/common/http";
-import { NgxUiLoaderModule, NgxUiLoaderRouterModule } from "ngx-ui-loader";
+import { NgxUiLoaderModule } from "ngx-ui-loader";
 import { preloaderConfig } from "./utils/preloader-config";
-import { AngularFireModule } from "@angular/fire/compat";
-import { environment } from "../environments/environment";
 
 import { AppComponent } from './app.component';
 import { CoreModule } from "./core/core.module";
@@ -15,12 +13,10 @@ import { CoreModule } from "./core/core.module";
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
+    AppRoutingModule,
     HttpClientModule,
     NgxUiLoaderModule.forRoot(preloaderConfig),
-    NgxUiLoaderRouterModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig),
     CoreModule
   ],
   providers: [],

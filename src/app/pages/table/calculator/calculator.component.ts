@@ -1,19 +1,19 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { DelegatesService } from "../../../shared/services/delegates.service";
+import { Component, OnInit } from '@angular/core';
+import { HydraledgerService } from "../../../shared/services/hydraledger.service";
 import { IDelegate } from "../../../shared/models/delegate.interface";
 import { delShareData } from "../../../utils/del-share";
 import { IWallet } from "../../../shared/models/wallet.interface";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { Subscription, switchMap } from "rxjs";
-import { DatabaseService } from "../../../shared/services/database.service";
 import { OwnDelegate } from "../../../shared/models/user.interface";
+import { DelegatesService } from "../../../shared/services/delegates.service";
 
 @Component({
   selector: 'app-calculator',
   templateUrl: './calculator.component.html',
   styleUrls: ['./calculator.component.scss']
 })
-export class CalculatorComponent implements OnInit, OnDestroy {
+export class CalculatorComponent implements OnInit {
   hydAmount: number = 100000;
   hydAddress: string = '';
   isValidAddress: boolean = true;
@@ -21,26 +21,22 @@ export class CalculatorComponent implements OnInit, OnDestroy {
   subscription!: Subscription;
 
   constructor(
+    private hydraledgerService: HydraledgerService,
     private delegatesService: DelegatesService,
-    private ngxLoader: NgxUiLoaderService,
-    private databaseService: DatabaseService
+    private ngxLoader: NgxUiLoaderService
   ) {}
 
   ngOnInit(): void {
     let registeredDelegates: OwnDelegate[];
-    this.subscription = this.databaseService.getRegisteredDelegates().pipe(
+    this.delegatesService.getRegisteredDelegates().pipe(
       switchMap((databaseDelegates) => {
         registeredDelegates = databaseDelegates;
-        return this.delegatesService.getAll();
+        return this.hydraledgerService.getAll();
       })
     ).subscribe((data) => {
       this.delegates = this.extendDelegate(data, registeredDelegates);
-      this.delegatesService.updateDelegateList(this.delegates);
+      this.hydraledgerService.updateDelegateList(this.delegates);
     });
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
   }
 
   private calcReward(votes: number, share: number): number {
@@ -57,15 +53,19 @@ export class CalculatorComponent implements OnInit, OnDestroy {
 
   private extendDelegate(arr: IDelegate[], registeredDelegates: OwnDelegate[]): IDelegate[] {
     return arr.map((delegate: IDelegate) => {
+      const timeHalfHourAgo = new Date().getTime() / 1000 - 1800;
       let registeredDelShareRate: number | null = null;
 
+      delegate.isForging = delegate.blocks.last.timestamp.unix > timeHalfHourAgo;
       delegate.isRegistered = registeredDelegates.some((del) => {
-        const registeredStatus = del.username === delegate.username;
+        const registeredStatus = del.name === delegate.username;
         registeredDelShareRate = registeredStatus ? del.shareRate : null;
         return registeredStatus;
       });
 
-      delegate.share = delegate.isRegistered ? registeredDelShareRate : (delShareData[delegate.username] ?? 0);
+      delegate.share = delegate.isRegistered
+        ? registeredDelShareRate
+        : (delShareData[delegate.username] ?? 0);
       delegate.votes = +delegate.votes / 10**8;
       delegate.payment = this.calcReward(delegate.votes, delegate.share);
 
@@ -78,7 +78,7 @@ export class CalculatorComponent implements OnInit, OnDestroy {
     this.delegates.forEach((delegate: IDelegate) => {
       delegate.payment = this.calcReward(delegate.votes, delegate.share);
     });
-    this.delegatesService.updateDelegateList(this.delegates);
+    this.hydraledgerService.updateDelegateList(this.delegates);
     this.ngxLoader.stopLoader('table-loader');
   }
 
@@ -88,7 +88,7 @@ export class CalculatorComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.delegatesService.getWallet(this.hydAddress).subscribe({
+    this.hydraledgerService.getWallet(this.hydAddress).subscribe({
       next: (wallet: IWallet) => {
         this.hydAmount = +wallet.balance.slice(0, -8);
         this.isValidAddress = true;

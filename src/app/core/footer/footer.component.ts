@@ -1,17 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatDialog } from "@angular/material/dialog";
 
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.scss']
+  styleUrls: ['./footer.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FooterComponent implements OnInit {
-
-  constructor(private dialog: MatDialog) { }
-
-  ngOnInit(): void {
-  }
+export class FooterComponent {
+  constructor(private dialog: MatDialog) {}
 
   openDialog(modal: any): void {
     this.dialog.open(modal);

@@ -2,22 +2,22 @@
   <header class="header">
     <div class="header-title">
       <img src="../../../assets/logo.png" class="logo" alt="Logo">
-      <a routerLink="">Hydra Calculator</a>
+      <a routerLink="/">Hydra Calculator</a>
     </div>
 
     <div>
       <div class="header-links">
-        <ng-container *ngIf="!isAuthenticated">
+        <ng-container *ngIf="user$ | async; else login">
+          <a routerLink="/profile">Profile</a>
+          <span> | </span>
+          <a (click)="onLogout()">Logout</a>
+        </ng-container>
+
+        <ng-template #login>
           <a routerLink="/login">Login</a>
           <span> | </span>
           <a routerLink="/registration">Registration</a>
-        </ng-container>
-
-        <ng-container *ngIf="isAuthenticated">
-          <a routerLink="/profile">Profile</a>
-          <span> | </span>
-          <a routerLink="/" (click)="onLogout()">Logout</a>
-        </ng-container>
+        </ng-template>
       </div>
 
       <img src="../../../assets/day-and-night.png"

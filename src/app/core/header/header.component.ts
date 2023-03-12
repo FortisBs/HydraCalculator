@@ -1,17 +1,18 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ThemeService } from "../../shared/services/theme.service";
 import { AuthService } from "../../shared/services/auth.service";
-import { Subscription } from "rxjs";
+import { Observable } from "rxjs";
+import { User } from "../../shared/models/user.interface";
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnInit {
   isDarkMode!: boolean;
-  isAuthenticated!: boolean;
-  subs!: Subscription;
+  user$!: Observable<User | null>;
 
   constructor(
     private themeService: ThemeService,
@@ -19,24 +20,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.subs = this.authService.user$.subscribe({
-      next: (user) => {
-        if (user) {
-          localStorage.setItem('hydraCalcUser', user.uid);
-          this.isAuthenticated = true;
-        } else {
-          localStorage.removeItem('hydraCalcUser');
-          this.isAuthenticated = false;
-        }
-      }
-    });
-
+    this.user$ = this.authService.user$;
     this.themeService.initTheme();
     this.isDarkMode = this.themeService.isDarkMode();
-  }
-
-  ngOnDestroy() {
-    this.subs.unsubscribe();
   }
 
   toggleDarkMode(): void {

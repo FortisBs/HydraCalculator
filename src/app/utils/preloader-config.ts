@@ -2,6 +2,7 @@ import { NgxUiLoaderConfig } from "ngx-ui-loader";
 import { Theme } from "../shared/services/theme.service";
 
 export const preloaderConfig: NgxUiLoaderConfig = {
+  "masterLoaderId": 'starting-loader',
   "blur": 5,
   "delay": 0,
   "fgsColor": "#673AB7",

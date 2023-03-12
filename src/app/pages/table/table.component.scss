@@ -38,10 +38,17 @@ th.mat-header-cell, td.mat-cell {
   border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-.check-mark {
-  height: 15px;
-  width: 15px;
-  vertical-align: middle;
+.del {
+  display: flex;
+  align-items: center;
+
+  &-mark {
+    height: 20px;
+    width: 20px;
+    line-height: 20px;
+    margin-left: 5px;
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 700px) {

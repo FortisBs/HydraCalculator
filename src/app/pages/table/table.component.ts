@@ -3,7 +3,7 @@ import { IDelegate } from "../../shared/models/delegate.interface";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTable, MatTableDataSource } from "@angular/material/table";
-import { DelegatesService } from "../../shared/services/delegates.service";
+import { HydraledgerService } from "../../shared/services/hydraledger.service";
 import { Subscription } from "rxjs";
 
 @Component({
@@ -21,7 +21,7 @@ export class TableComponent implements OnInit, OnDestroy {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private delegateService: DelegatesService) {}
+  constructor(private delegateService: HydraledgerService) {}
 
   ngOnInit(): void {
     this.subscription = this.delegateService.delegateList$.subscribe((data) => {
@@ -29,7 +29,7 @@ export class TableComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
 
@@ -42,7 +42,7 @@ export class TableComponent implements OnInit, OnDestroy {
     filterInput.value = '';
   }
 
-  private compare(a: number | string, b: number | string, isAsc: boolean) {
+  private compare(a: number | string, b: number | string, isAsc: boolean): number {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 

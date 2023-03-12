@@ -2,34 +2,24 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProfileComponent } from "./profile.component";
 import { AddDelegateComponent } from "./add-delegate/add-delegate.component";
-import { DashboardComponent } from "./dashboard/dashboard.component";
-import { MatCardModule } from "@angular/material/card";
-import { MatStepperModule } from "@angular/material/stepper";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatIconModule } from "@angular/material/icon";
-import { MatInputModule } from "@angular/material/input";
-import { MatExpansionModule } from "@angular/material/expansion";
-import { MatDialogModule } from "@angular/material/dialog";
-import { RouterModule } from "@angular/router";
+import { RouterModule, Routes } from "@angular/router";
+import { MaterialModule } from "../../shared/material/material.module";
 import { AuthGuard } from "../../shared/guards/auth.guard";
-import { MatButtonModule } from "@angular/material/button";
+
+const routes: Routes = [
+  { path: '', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'addDelegate', component: AddDelegateComponent, canActivate: [AuthGuard] }
+];
 
 @NgModule({
-  declarations: [ProfileComponent, AddDelegateComponent, DashboardComponent],
+  declarations: [ProfileComponent, AddDelegateComponent],
   imports: [
     CommonModule,
-    RouterModule.forChild([{path: '', component: ProfileComponent, canActivate: [AuthGuard]}]),
+    RouterModule.forChild(routes),
     FormsModule,
     ReactiveFormsModule,
-    MatCardModule,
-    MatStepperModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule,
-    MatExpansionModule,
-    MatDialogModule,
-    MatButtonModule
+    MaterialModule
   ]
 })
 export class ProfileModule {}

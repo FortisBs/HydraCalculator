@@ -1,10 +1,56 @@
-<div [ngSwitch]="activeFeature">
-  <app-dashboard *ngSwitchCase="'dashboard'"
-                 (openAddDelegate)="toggleFeature($event)"
-                 [ownDelegates]="userDelegates">
-  </app-dashboard>
-  <app-add-delegate *ngSwitchCase="'addDelegate'"
-                    (openDashboard)="toggleFeature($event)"
-                    [ownDelegates]="userDelegates">
-  </app-add-delegate>
-</div>
+<mat-card class="mat-elevation-z8 profile-container">
+
+  <mat-card-title>
+    <span>Your delegates</span>
+    <a mat-mini-fab color="accent" class="add-btn" routerLink="addDelegate">
+      <mat-icon>add</mat-icon>
+    </a>
+  </mat-card-title>
+
+  <mat-card-content>
+    <mat-accordion>
+
+      <mat-expansion-panel disabled>
+        <mat-expansion-panel-header class="panel-header">
+          <mat-panel-title class="delegate">Delegate</mat-panel-title>
+          <mat-panel-description>Share rate</mat-panel-description>
+        </mat-expansion-panel-header>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel *ngFor="let del of userDelegates$ | async">
+        <mat-expansion-panel-header>
+          <mat-panel-title class="delegate">{{ del.name }}</mat-panel-title>
+          <mat-panel-description>{{ del.shareRate | percent }}</mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div class="actions">
+          <button mat-raised-button color="primary" (click)="openEdit(del, modalEdit)">Edit</button>
+          <button mat-raised-button color="warn" (click)="onDeleteDelegate(del._id)">Delete</button>
+        </div>
+      </mat-expansion-panel>
+
+    </mat-accordion>
+  </mat-card-content>
+
+</mat-card>
+
+<ng-template #modalEdit>
+  <form [formGroup]="editForm">
+    <h2 mat-dialog-title>Edit {{ editingDelegate.name }}</h2>
+
+    <mat-dialog-content>
+      <mat-form-field>
+        <mat-label>Share rate</mat-label>
+        <input matInput type="number" placeholder="Example 0.85"
+               formControlName="shareRate" min="0" max="1">
+      </mat-form-field>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+      <button mat-flat-button color="accent" [disabled]="editForm.invalid"
+              (click)="onEditDelegate()"
+      >Save</button>
+      <button mat-flat-button mat-dialog-close color="primary">Cancel</button>
+    </mat-dialog-actions>
+  </form>
+</ng-template>
