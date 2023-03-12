@@ -1,23 +1,45 @@
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from "@angular/fire/compat/auth";
+import { HttpClient } from "@angular/common/http";
+import { LoginResponse, User } from "../models/user.interface";
+import { BehaviorSubject, Observable, tap } from "rxjs";
+import { environment } from "../../../environments/environment";
+import { Router } from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  user$ = this.auth.user;
+  private url = environment.serverUrl + '/auth';
+  user$ = new BehaviorSubject<User | null>(null);
 
-  constructor(private auth: AngularFireAuth) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
-  addUser(email: string, password: string) {
-    return this.auth.createUserWithEmailAndPassword(email, password);
+  createUser(username: string, password: string): Observable<unknown> {
+    return this.http.post(`${this.url}/registration`, { username, password });
   }
 
-  login(email: string, password: string) {
-    return this.auth.signInWithEmailAndPassword(email, password);
+  login(username: string, password: string): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.url}/login`, { username, password }).pipe(
+      tap((res) => {
+        this.user$.next(res.user);
+        localStorage.setItem('user', JSON.stringify(res.user));
+        localStorage.setItem('token', res.token);
+        this.router.navigateByUrl('/profile');
+      })
+    );
   }
 
-  logout() {
-    this.auth.signOut();
+  logout(): void {
+    this.user$.next(null);
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    this.router.navigateByUrl('/');
+  }
+
+  autoLogin(): void {
+    const token = localStorage.getItem('token');
+    const userLS = localStorage.getItem('user');
+    const user = token && userLS ? JSON.parse(userLS) as User : null;
+    this.user$.next(user);
   }
 }

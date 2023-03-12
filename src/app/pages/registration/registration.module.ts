@@ -1,13 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RegistrationComponent } from "./registration.component";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatInputModule } from "@angular/material/input";
-import { MatStepperModule } from "@angular/material/stepper";
-import { MatCardModule } from "@angular/material/card";
 import { RouterModule } from "@angular/router";
-import { MatButtonModule } from "@angular/material/button";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { MaterialModule } from "../../shared/material/material.module";
+import { RegistrationComponent } from "./registration.component";
 
 @NgModule({
   declarations: [RegistrationComponent],
@@ -16,11 +12,7 @@ import { MatButtonModule } from "@angular/material/button";
     RouterModule.forChild([{path: '', component: RegistrationComponent}]),
     FormsModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatStepperModule,
-    MatCardModule,
-    MatButtonModule
+    MaterialModule
   ]
 })
 export class RegistrationModule { }

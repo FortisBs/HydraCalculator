@@ -1,3 +1,19 @@
+export interface IDelegate {
+  payment?: any;
+  share?: any;
+  isRegistered?: boolean;
+  isForging?: boolean;
+  username: string;
+  address: string;
+  publicKey: string;
+  votes: any;
+  rank: number;
+  isResigned: boolean;
+  blocks: Blocks;
+  production: Production;
+  forged: Forged;
+}
+
 export interface Timestamp {
   epoch: number;
   unix: number;
@@ -23,19 +39,4 @@ export interface Forged {
   fees: string;
   rewards: string;
   total: string;
-}
-
-export interface IDelegate {
-  payment?: any;
-  share?: any;
-  isRegistered?: boolean;
-  username: string;
-  address: string;
-  publicKey: string;
-  votes: any;
-  rank: number;
-  isResigned: boolean;
-  blocks: Blocks;
-  production: Production;
-  forged: Forged;
 }

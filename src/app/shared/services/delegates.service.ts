@@ -1,47 +1,64 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
-import { map, Observable, Subject } from "rxjs";
-import { IDelegate } from "../models/delegate.interface";
-import { ITransaction } from "../models/transaction.interface";
-import { IWallet } from "../models/wallet.interface";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { BehaviorSubject, Observable, switchMap } from "rxjs";
+import { NewDelegate, OwnDelegate } from "../models/user.interface";
+import { AuthService } from "./auth.service";
+import { environment } from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DelegatesService {
-  delegateList$ = new Subject<IDelegate[]>();
+  private url = environment.serverUrl + '/delegates';
+  private userDelegates: OwnDelegate[] = [];
+  userDelegates$ = new BehaviorSubject<OwnDelegate[]>([]);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
-  updateDelegateList(list: IDelegate[]) {
-    this.delegateList$.next(list);
+  addDelegate(delegate: NewDelegate): Observable<unknown> {
+    return this.http.post(this.url, delegate, this.authHeaders);
   }
 
-  getAll(): Observable<IDelegate[]> {
-    const url = 'https://explorer.hydraledger.io:4705/api/v2/delegates?limit=53';
-    return this.http.get<{data: IDelegate[], meta: any}>(url).pipe(
-      map((response) => response.data)
-    );
+  getDelegateByName(name: string): Observable<OwnDelegate | null> {
+    return this.http.get<OwnDelegate | null>(`${this.url}/getBy?name=${name}`);
   }
 
-  getDelegate(username: string): Observable<IDelegate> {
-    const url = `https://explorer.hydraledger.io:4705/api/v2/delegates?username=${username}`;
-    return this.http.get<{data: IDelegate[], meta: any}>(url).pipe(
-      map((response) => response.data[0])
-    );
+  getUserDelegates(): void {
+    this.authService.user$.pipe(
+      switchMap((user) => {
+        return this.http.get<OwnDelegate[]>(`${this.url}/getBy?userId=${user?._id}`);
+      })
+    ).subscribe((delegates) => {
+      this.userDelegates = delegates;
+      this.userDelegates$.next([...this.userDelegates]);
+    });
   }
 
-  getWallet(address: string): Observable<IWallet> {
-    const url = 'https://explorer.hydraledger.io:4705/api/v2/wallets/';
-    return this.http.get<{data: IWallet}>(url + address).pipe(
-      map(response => response.data)
-    );
+  getRegisteredDelegates(): Observable<OwnDelegate[]> {
+    return this.http.get<OwnDelegate[]>(this.url);
   }
 
-  getTransaction(id: string): Observable<ITransaction> {
-    const url = `https://explorer.hydraledger.io:4705/api/v2/transactions/${id}`;
-    return this.http.get<{data: ITransaction}>(url).pipe(
-      map((response) => response.data)
-    );
+  updateDelegate(delegate: OwnDelegate): void {
+    this.http.patch<OwnDelegate>(this.url, delegate, this.authHeaders)
+      .subscribe((updatedDelegate) => {
+        const i = this.userDelegates.findIndex((del) => del._id === updatedDelegate._id);
+        this.userDelegates[i] = updatedDelegate;
+        this.userDelegates$.next([...this.userDelegates]);
+      });
+  }
+
+  deleteDelegate(id: string): void {
+    this.http.delete(this.url + '/' + id, this.authHeaders)
+      .subscribe(() => {
+        const i = this.userDelegates.findIndex((del) => del._id === id);
+        this.userDelegates.splice(i, 1);
+        this.userDelegates$.next([...this.userDelegates]);
+      });
+  }
+
+  private get authHeaders(): { headers: HttpHeaders } {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token!);
+    return { headers };
   }
 }

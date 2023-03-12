@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { DelegatesService } from "../../shared/services/delegates.service";
-import { DatabaseService } from "../../shared/services/database.service";
+import { HydraledgerService } from "../../shared/services/hydraledger.service";
 import { AuthService } from "../../shared/services/auth.service";
 import { MatStepper } from "@angular/material/stepper";
+import { DelegatesService } from "../../shared/services/delegates.service";
+import { LoginResponse, NewDelegate } from "../../shared/models/user.interface";
+import { Observable, switchMap } from "rxjs";
 
 @Component({
   selector: 'app-registration',
@@ -21,55 +23,57 @@ export class RegistrationComponent {
   registrationPending = false;
 
   delegateForm = new FormGroup({
-    username: new FormControl(null, Validators.required),
+    name: new FormControl(null, Validators.required),
     shareRate: new FormControl(null, [
-      Validators.required, Validators.min(0), Validators.max(1)
+      Validators.required,
+      Validators.pattern(/^(0(\.\d{1,2})?|1(\.0{1,2})?)$|^([01](\.\d{1,2})?)$/)
     ])
   });
   transactionForm = new FormGroup({
     transactionId: new FormControl(null, Validators.required),
   });
   profileForm = new FormGroup({
-    email: new FormControl(null, [Validators.required, Validators.email]),
-    password: new FormControl(null, [Validators.required, Validators.minLength(6)])
+    username: new FormControl(null, [
+      Validators.required, Validators.minLength(3)
+    ]),
+    password: new FormControl(null, [
+      Validators.required, Validators.minLength(4), Validators.maxLength(10)
+    ])
   });
 
   constructor(
-    private delegatesService: DelegatesService,
-    private auth: AuthService,
-    private db: DatabaseService
+    private hydraledgerService: HydraledgerService,
+    private authService: AuthService,
+    private delegatesService: DelegatesService
   ) {}
 
   findDelegate(stepper: MatStepper) {
     this.findDelegatePending = true;
-    const username = this.delegateForm.value.username! as string;
+    const name = this.delegateForm.value.name! as string;
 
-    this.delegatesService.getDelegate(username).subscribe({
-      next: (delegate) => {
-        if (!delegate || username !== delegate.username) {
-          this.delegateErrorMessage = 'Delegate not found';
-          this.findDelegatePending = false;
-          return;
-        }
+    this.hydraledgerService.getDelegate(name).subscribe((delegate) => {
+      if (!delegate || name !== delegate.username) {
+        this.delegateErrorMessage = 'Delegate not found';
+        this.findDelegatePending = false;
+        return;
+      }
 
-        this.db.getRegisteredDelegates().subscribe({
-          next: (value) => {
-            const isAlreadyRegistered = value.some((delegateData) => {
-              return delegateData.username === username;
-            });
-
-            if (isAlreadyRegistered) {
-              this.delegateErrorMessage = 'Already registered';
-              this.findDelegatePending = false;
-              return;
-            }
-
+      this.delegatesService.getDelegateByName(name).subscribe({
+        next: (ownDelegate) => {
+          if (ownDelegate) {
+            this.delegateErrorMessage = 'Already registered';
+            this.findDelegatePending = false;
+          } else {
             this.delegateAddress = delegate.address;
             this.delegateErrorMessage = '';
             stepper.next();
           }
-        });
-      }
+        },
+        error: (err) => {
+          this.delegateErrorMessage = err.error.message;
+          this.findDelegatePending = false;
+        }
+      });
     });
   }
 
@@ -77,7 +81,7 @@ export class RegistrationComponent {
     this.transactionPending = true;
     const transactionId = this.transactionForm.value.transactionId! as string;
 
-    this.delegatesService.getTransaction(transactionId).subscribe({
+    this.hydraledgerService.getTransaction(transactionId).subscribe({
       next: (transaction) => {
         const currentTime = Math.floor(new Date().getTime() / 1000);
         const oneHourInSeconds = 3600;
@@ -115,50 +119,35 @@ export class RegistrationComponent {
     });
   }
 
-  private createUser() {
-    const email = this.profileForm.value.email! as string;
-    const password = this.profileForm.value.password! as string;
-
-    return this.auth.addUser(email, password);
-  }
-
-  private createDelegate(id: string) {
-    const username = this.delegateForm.value.username! as string;
-    const shareRate = this.delegateForm.value.shareRate! as number;
-    const ownDelegates = [{ username, shareRate }];
-
-    return this.db.updateDelegate(id, { ownDelegates });
-  }
-
   register(stepCredentials: MatStepper) {
     this.registrationPending = true;
 
     this.createUser()
-      .then((res) => {
-        this.createDelegate(res.user!.uid)
-          .then(() => stepCredentials.next())
-          .catch(() => {
-            this.registrationPending = false;
-            this.registrationErrorMessage = 'Something went wrong';
-          })
-      })
-      .catch((error) => this.handleRegistrationError(error));
+      .pipe(
+        switchMap((res) => this.createDelegate(res.user._id))
+      )
+      .subscribe({
+        next: () => stepCredentials.next(),
+        error: (err) => {
+          this.registrationPending = false;
+          this.registrationErrorMessage = err.error.message;
+        }
+      });
   }
 
-  private handleRegistrationError(error: any) {
-    this.registrationPending = false;
-    switch (error.code) {
-      case 'auth/email-already-in-use':
-        this.registrationErrorMessage = 'Email already in use';
-        break;
-      case 'auth/invalid-email':
-        this.registrationErrorMessage = 'Invalid email';
-        break;
-      case 'auth/weak-password':
-        this.registrationErrorMessage = 'Password is too short';
-        break;
-      default:
-        this.registrationErrorMessage = 'Something went wrong';
-    }
+  private createUser(): Observable<LoginResponse> {
+    const { username, password } = this.profileForm.value;
+    return this.authService.createUser(username!, password!).pipe(
+      switchMap(() => this.authService.login(username!, password!))
+    );
+  }
+
+  private createDelegate(userId: string): Observable<unknown> {
+    const delegate: NewDelegate = {
+      name: this.delegateForm.value.name!,
+      shareRate: this.delegateForm.value.shareRate!,
+      userId
+    };
+    return this.delegatesService.addDelegate(delegate);
   }
 }

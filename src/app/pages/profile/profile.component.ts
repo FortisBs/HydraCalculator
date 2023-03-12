@@ -1,34 +1,46 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from "../../shared/services/auth.service";
-import { DatabaseService } from "../../shared/services/database.service";
+import { ChangeDetectionStrategy, Component, OnInit, TemplateRef } from '@angular/core';
 import { OwnDelegate } from "../../shared/models/user.interface";
-
-type ProfileFeature = 'dashboard' | 'addDelegate';
+import { MatDialog } from "@angular/material/dialog";
+import { DelegatesService } from "../../shared/services/delegates.service";
+import { Observable } from "rxjs";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+  styleUrls: ['./profile.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProfileComponent implements OnInit {
-  activeFeature: ProfileFeature = 'dashboard';
-  userDelegates: OwnDelegate[] = [];
+  userDelegates$!: Observable<OwnDelegate[]>;
+  editingDelegate!: OwnDelegate;
+  editForm!: FormGroup;
 
-  constructor(
-    private authService: AuthService,
-    private databaseService: DatabaseService
-  ) {}
+  constructor(private delegatesService: DelegatesService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
-    const uid = localStorage.getItem('hydraCalcUser');
-    if (uid) {
-      this.databaseService.getDelegate(uid).subscribe({
-        next: (value) => this.userDelegates = value
-      });
-    }
+    this.userDelegates$ = this.delegatesService.userDelegates$;
+    this.delegatesService.getUserDelegates();
   }
 
-  toggleFeature(feature: ProfileFeature) {
-    this.activeFeature = feature;
+  onDeleteDelegate(id: string): void {
+    this.delegatesService.deleteDelegate(id);
+  }
+
+  openEdit(delegate: OwnDelegate, modalEdit: TemplateRef<any>): void {
+    this.editingDelegate = { ...delegate };
+    this.editForm = new FormGroup({
+      shareRate: new FormControl(this.editingDelegate.shareRate, [
+        Validators.required,
+        Validators.pattern(/^(0(\.\d{1,2})?|1(\.0{1,2})?)$|^([01](\.\d{1,2})?)$/)
+      ])
+    });
+    this.dialog.open(modalEdit);
+  }
+
+  onEditDelegate(): void {
+    this.editingDelegate.shareRate = this.editForm.value.shareRate;
+    this.delegatesService.updateDelegate(this.editingDelegate);
+    this.dialog.closeAll();
   }
 }

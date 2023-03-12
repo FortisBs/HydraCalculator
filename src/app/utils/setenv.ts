@@ -13,14 +13,7 @@ const targetPath = isProduction
 const environmentFileContent = `
 export const environment = {
    production: ${isProduction},
-   firebaseConfig: {
-    apiKey: "${process.env['apiKey']}",
-    authDomain: "${process.env['authDomain']}",
-    projectId: "${process.env['projectId']}",
-    storageBucket: "${process.env['storageBucket']}",
-    messagingSenderId: "${process.env['messagingSenderId']}",
-    appId: "${process.env['appId']}",
-  }
+   serverUrl: "${process.env['SERVER_URL']}"
 };
 `;
 

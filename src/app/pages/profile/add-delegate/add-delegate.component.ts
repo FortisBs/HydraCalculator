@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { DelegatesService } from "../../../shared/services/delegates.service";
+import { HydraledgerService } from "../../../shared/services/hydraledger.service";
 import { AuthService } from "../../../shared/services/auth.service";
-import { DatabaseService } from "../../../shared/services/database.service";
 import { MatStepper } from "@angular/material/stepper";
-import { OwnDelegate } from "../../../shared/models/user.interface";
+import { NewDelegate } from "../../../shared/models/user.interface";
+import { DelegatesService } from "../../../shared/services/delegates.service";
+import { Observable, switchMap } from "rxjs";
 
 @Component({
   selector: 'app-add-delegate',
@@ -12,9 +13,6 @@ import { OwnDelegate } from "../../../shared/models/user.interface";
   styleUrls: ['./add-delegate.component.scss']
 })
 export class AddDelegateComponent {
-  @Output() openDashboard = new EventEmitter<'dashboard'>();
-  @Input() ownDelegates!: OwnDelegate[];
-
   delegateAddress!: string;
   secretKey = Math.floor(Math.random() * 10**10);
   delegateErrorMessage!: string;
@@ -23,9 +21,10 @@ export class AddDelegateComponent {
   transactionPending = false;
 
   delegateForm = new FormGroup({
-    username: new FormControl(null, Validators.required),
+    name: new FormControl(null, Validators.required),
     shareRate: new FormControl(null, [
-      Validators.required, Validators.min(0), Validators.max(1)
+      Validators.required,
+      Validators.pattern(/^(0(\.\d{1,2})?|1(\.0{1,2})?)$|^([01](\.\d{1,2})?)$/)
     ])
   });
   transactionForm = new FormGroup({
@@ -33,45 +32,38 @@ export class AddDelegateComponent {
   });
 
   constructor(
-    private delegatesService: DelegatesService,
-    private auth: AuthService,
-    private db: DatabaseService
+    private hydraledgerService: HydraledgerService,
+    private authService: AuthService,
+    private delegatesService: DelegatesService
   ) {}
-
-  goToDashboard() {
-    this.openDashboard.emit('dashboard');
-  }
 
   findDelegate(stepper: MatStepper) {
     this.findDelegatePending = true;
-    const username = this.delegateForm.value.username! as string;
+    const name = this.delegateForm.value.name! as string;
 
-    this.delegatesService.getDelegate(username).subscribe({
-      next: (delegate) => {
-        if (!delegate || username !== delegate.username) {
-          this.delegateErrorMessage = 'Delegate not found';
-          this.findDelegatePending = false;
-          return;
-        }
+    this.hydraledgerService.getDelegate(name).subscribe((delegate) => {
+      if (!delegate || name !== delegate.username) {
+        this.delegateErrorMessage = 'Delegate not found';
+        this.findDelegatePending = false;
+        return;
+      }
 
-        this.db.getRegisteredDelegates().subscribe({
-          next: (value) => {
-            const isAlreadyRegistered = value.some((delegateData) => {
-              return delegateData.username === username;
-            });
-
-            if (isAlreadyRegistered) {
-              this.delegateErrorMessage = 'Already registered';
-              this.findDelegatePending = false;
-              return;
-            }
-
+      this.delegatesService.getDelegateByName(name).subscribe({
+        next: (ownDelegate) => {
+          if (ownDelegate) {
+            this.delegateErrorMessage = 'Already registered';
+            this.findDelegatePending = false;
+          } else {
             this.delegateAddress = delegate.address;
             this.delegateErrorMessage = '';
             stepper.next();
           }
-        });
-      }
+        },
+        error: (err) => {
+          this.delegateErrorMessage = err.error.message;
+          this.findDelegatePending = false;
+        }
+      });
     });
   }
 
@@ -79,7 +71,7 @@ export class AddDelegateComponent {
     this.transactionPending = true;
     const transactionId = this.transactionForm.value.transactionId! as string;
 
-    this.delegatesService.getTransaction(transactionId).subscribe({
+    this.hydraledgerService.getTransaction(transactionId).subscribe({
       next: (transaction) => {
         const currentTime = Math.floor(new Date().getTime() / 1000);
         const oneHourInSeconds = 3600;
@@ -108,10 +100,13 @@ export class AddDelegateComponent {
         }
 
         this.transactionErrorMessage = '';
-        const uid = localStorage.getItem('hydraCalcUser');
-        this.createDelegate(uid!)
-          .then(() => stepper.next())
-          .catch(() => this.ownDelegates.pop());
+        this.createDelegate().subscribe({
+          next: () => stepper.next(),
+          error: (err) => {
+            this.transactionErrorMessage = err.error.message;
+            this.transactionPending = false;
+          }
+        });
       },
       error: () => {
         this.transactionErrorMessage = "Transaction doesn't exist";
@@ -120,11 +115,16 @@ export class AddDelegateComponent {
     });
   }
 
-  private createDelegate(id: string) {
-    const username = this.delegateForm.value.username! as string;
-    const shareRate = this.delegateForm.value.shareRate! as number;
-    this.ownDelegates.push({ username, shareRate });
-
-    return this.db.updateDelegate(id, { ownDelegates: this.ownDelegates });
+  private createDelegate(): Observable<unknown> {
+    return this.authService.user$.pipe(
+      switchMap((user) => {
+        const delegate: NewDelegate = {
+          name: this.delegateForm.value.name!,
+          shareRate: this.delegateForm.value.shareRate!,
+          userId: user!._id
+        };
+        return this.delegatesService.addDelegate(delegate);
+      })
+    );
   }
 }
