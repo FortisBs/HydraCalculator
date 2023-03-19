@@ -34,3 +34,10 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+.address-error {
+  margin: -15px 0px 0px 10px;
+  font-size: 12px;
+  font-weight: bold;
+  color: red;
+}

@@ -6,9 +6,10 @@ import { MaterialModule } from "../../shared/material/material.module";
 import { NgxUiLoaderModule } from "ngx-ui-loader";
 import { TableComponent } from "./table.component";
 import { CalculatorComponent } from "./calculator/calculator.component";
+import { VotingComponent } from './voting/voting.component';
 
 @NgModule({
-  declarations: [TableComponent, CalculatorComponent],
+  declarations: [TableComponent, CalculatorComponent, VotingComponent],
   imports: [
     CommonModule,
     RouterModule.forChild([{ path: '', component: TableComponent }]),

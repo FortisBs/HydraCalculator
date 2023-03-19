@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { BehaviorSubject, Observable, switchMap } from "rxjs";
+import { BehaviorSubject, Observable, of, switchMap } from "rxjs";
 import { NewDelegate, OwnDelegate } from "../models/user.interface";
 import { AuthService } from "./auth.service";
 import { environment } from "../../../environments/environment";
@@ -26,7 +26,13 @@ export class DelegatesService {
   getUserDelegates(): void {
     this.authService.user$.pipe(
       switchMap((user) => {
-        return this.http.get<OwnDelegate[]>(`${this.url}/getBy?userId=${user?._id}`);
+        if (user?.roles.includes('USER')) {
+          return this.http.get<OwnDelegate[]>(`${this.url}/getBy?userId=${user?._id}`);
+        }
+        if (user?.roles.includes('ADMIN')) {
+          return this.getRegisteredDelegates();
+        }
+        return of([]);
       })
     ).subscribe((delegates) => {
       this.userDelegates = delegates;

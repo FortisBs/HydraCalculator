@@ -15,11 +15,14 @@
       <mat-form-field appearance="fill" class="add-amount-input">
         <mat-label>Address</mat-label>
         <input matInput maxlength="34" [(ngModel)]="hydAddress" name="hydAddress" placeholder="HYD Wallet Address">
-        <button matSuffix mat-icon-button (click)="hydAddress=''" class="suffix" [class.hidden]="!hydAddress">
+        <button matSuffix mat-icon-button (click)="clearAddress()" class="suffix" [class.hidden]="!hydAddress">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
       <button mat-flat-button (click)="calcByAddress()" color="primary">Calculate</button>
     </div>
+    <p class="address-error" *ngIf="!isValidAddress">Wrong address</p>
   </mat-tab>
 </mat-tab-group>
+
+<app-voting *ngIf="openVoting" [votedDelegate]="votedDelegate" (simulateVote)="recalculateFromVoting($event)"></app-voting>

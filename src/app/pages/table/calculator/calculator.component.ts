@@ -16,8 +16,10 @@ import { DelegatesService } from "../../../shared/services/delegates.service";
 export class CalculatorComponent implements OnInit {
   hydAmount: number = 100000;
   hydAddress: string = '';
+  votedDelegate: string = '';
   isValidAddress: boolean = true;
-  delegates!: IDelegate[];
+  openVoting: boolean = false;
+  delegates: IDelegate[] = [];
   subscription!: Subscription;
 
   constructor(
@@ -65,7 +67,7 @@ export class CalculatorComponent implements OnInit {
 
       delegate.share = delegate.isRegistered
         ? registeredDelShareRate
-        : (delShareData[delegate.username] ?? 0);
+        : delShareData[delegate.username] ?? 0;
       delegate.votes = +delegate.votes / 10**8;
       delegate.payment = this.calcReward(delegate.votes, delegate.share);
 
@@ -90,13 +92,43 @@ export class CalculatorComponent implements OnInit {
 
     this.hydraledgerService.getWallet(this.hydAddress).subscribe({
       next: (wallet: IWallet) => {
-        this.hydAmount = +wallet.balance.slice(0, -8);
         this.isValidAddress = true;
+        this.openVoting = true;
+        this.hydAmount = +wallet.balance.slice(0, -8);
         this.recalculate();
+
+        if (wallet.vote) {
+          this.hydraledgerService.getDelegateBy('publicKey', wallet.vote).subscribe((delegate) => {
+            this.votedDelegate = delegate.username;
+          });
+        } else {
+          this.votedDelegate = '';
+        }
       },
       error: () => {
         this.isValidAddress = false;
       }
     });
+  }
+
+  clearAddress(): void {
+    this.hydAddress = '';
+    this.isValidAddress = true;
+  }
+
+  recalculateFromVoting(simulatedDelegate: string): void {
+    this.ngxLoader.startLoader('table-loader');
+    this.delegates.forEach((delegate: IDelegate) => {
+      if (delegate.username === this.votedDelegate) {
+        delegate.votes -= this.hydAmount;
+      }
+      if (delegate.username === simulatedDelegate) {
+        delegate.votes += this.hydAmount;
+      }
+      delegate.payment = this.calcReward(delegate.votes, delegate.share);
+    });
+    this.votedDelegate = simulatedDelegate;
+    this.hydraledgerService.updateDelegateList(this.delegates);
+    this.ngxLoader.stopLoader('table-loader');
   }
 }

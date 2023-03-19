@@ -61,14 +61,16 @@
         <form [formGroup]="profileForm">
 
           <ng-template matStepLabel>Create a profile</ng-template>
-          <mat-form-field appearance="fill">
+          <mat-form-field appearance="fill" class="hint-margin">
             <mat-label>Username</mat-label>
             <input matInput formControlName="username">
+            <mat-hint>Min 3 characters</mat-hint>
           </mat-form-field><br>
 
-          <mat-form-field appearance="fill">
+          <mat-form-field appearance="fill" class="hint-margin">
             <mat-label>Password</mat-label>
-            <input matInput type="password" formControlName="password">
+            <input matInput type="password" formControlName="password" maxlength="16">
+            <mat-hint>4-16 characters</mat-hint>
           </mat-form-field>
 
           <div>
