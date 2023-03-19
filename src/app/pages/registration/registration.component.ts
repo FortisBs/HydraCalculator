@@ -37,7 +37,7 @@ export class RegistrationComponent {
       Validators.required, Validators.minLength(3)
     ]),
     password: new FormControl(null, [
-      Validators.required, Validators.minLength(4), Validators.maxLength(10)
+      Validators.required, Validators.minLength(4), Validators.maxLength(16)
     ])
   });
 
@@ -51,7 +51,7 @@ export class RegistrationComponent {
     this.findDelegatePending = true;
     const name = this.delegateForm.value.name! as string;
 
-    this.hydraledgerService.getDelegate(name).subscribe((delegate) => {
+    this.hydraledgerService.getDelegateBy('username', name).subscribe((delegate) => {
       if (!delegate || name !== delegate.username) {
         this.delegateErrorMessage = 'Delegate not found';
         this.findDelegatePending = false;

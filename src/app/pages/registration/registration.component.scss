@@ -11,7 +11,7 @@ form {
 }
 
 .reg-container {
-  width: 300px;
+  width: 330px;
 }
 
 input::-webkit-outer-spin-button,
@@ -24,4 +24,8 @@ input::-webkit-inner-spin-button {
   margin-left: 10px;
   font-size: 14px;
   color: red;
+}
+
+.hint-margin {
+  margin-bottom: 10px;
 }

@@ -1,0 +1,35 @@
+<div class="voting" *ngIf="!isEditing; else voteFor">
+  <p *ngIf="votedDelegate; else noVote">
+    You are voting for: <b>{{ votedDelegate }}</b>
+  </p>
+
+  <button mat-icon-button matTooltip="Change" color="primary" (click)="openEdit()">
+    <mat-icon>edit</mat-icon>
+  </button>
+</div>
+
+<ng-template #voteFor>
+  <div class="voting">
+    <p>Vote for:</p>
+
+    <div>
+      <mat-form-field class="voting-input">
+        <mat-label>Simulate voting</mat-label>
+        <input matInput placeholder="Delegate" name="editName" [(ngModel)]="editName">
+      </mat-form-field>
+      <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+    </div>
+
+    <button mat-icon-button [disabled]="reqPending" matTooltip="Save" color="accent" (click)="saveEdit()">
+      <mat-icon>check</mat-icon>
+    </button>
+
+    <button mat-icon-button matTooltip="Cancel" color="warn" (click)="closeEdit()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #noVote>
+  <p>You are not voting for anyone</p>
+</ng-template>

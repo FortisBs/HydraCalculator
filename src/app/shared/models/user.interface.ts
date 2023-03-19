@@ -9,9 +9,7 @@ export interface User {
   roles: Role[];
 }
 
-export interface Role {
-  role: string;
-}
+export type Role = 'ADMIN' | 'USER';
 
 export interface NewDelegate {
   name: string;

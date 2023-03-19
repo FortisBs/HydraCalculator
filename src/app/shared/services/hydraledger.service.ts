@@ -25,8 +25,8 @@ export class HydraledgerService {
     );
   }
 
-  getDelegate(username: string): Observable<IDelegate> {
-    const url = `${this.url}/delegates?username=${username}`;
+  getDelegateBy(query: 'username' | 'publicKey', value: string): Observable<IDelegate> {
+    const url = `${this.url}/delegates?${query}=${value}`;
     return this.http.get<{data: IDelegate[], meta: any}>(url).pipe(
       map((response) => response.data[0])
     );

@@ -41,7 +41,7 @@ export class AddDelegateComponent {
     this.findDelegatePending = true;
     const name = this.delegateForm.value.name! as string;
 
-    this.hydraledgerService.getDelegate(name).subscribe((delegate) => {
+    this.hydraledgerService.getDelegateBy('username', name).subscribe((delegate) => {
       if (!delegate || name !== delegate.username) {
         this.delegateErrorMessage = 'Delegate not found';
         this.findDelegatePending = false;
