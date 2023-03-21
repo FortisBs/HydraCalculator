@@ -3,7 +3,6 @@ import { HttpClient } from "@angular/common/http";
 import { LoginResponse, User } from "../models/user.interface";
 import { BehaviorSubject, Observable, tap } from "rxjs";
 import { environment } from "../../../environments/environment";
-import { Router } from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +11,9 @@ export class AuthService {
   private url = environment.serverUrl + '/auth';
   user$ = new BehaviorSubject<User | null>(null);
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient) {}
 
-  createUser(username: string, password: string): Observable<unknown> {
+  createUser(username: string, password: string) {
     return this.http.post(`${this.url}/registration`, { username, password });
   }
 
@@ -24,7 +23,6 @@ export class AuthService {
         this.user$.next(res.user);
         localStorage.setItem('user', JSON.stringify(res.user));
         localStorage.setItem('token', res.token);
-        this.router.navigateByUrl('/profile');
       })
     );
   }
@@ -33,7 +31,6 @@ export class AuthService {
     this.user$.next(null);
     localStorage.removeItem('user');
     localStorage.removeItem('token');
-    this.router.navigateByUrl('/');
   }
 
   autoLogin(): void {
