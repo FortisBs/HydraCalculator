@@ -10,7 +10,7 @@
         <ng-container *ngIf="user$ | async; else login">
           <a routerLink="/profile">Profile</a>
           <span> | </span>
-          <a (click)="onLogout()">Logout</a>
+          <a routerLink="/" (click)="onLogout()">Logout</a>
         </ng-container>
 
         <ng-template #login>

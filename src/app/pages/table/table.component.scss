@@ -17,6 +17,10 @@ th.mat-header-cell, td.mat-cell {
 .table {
   position: relative;
   overflow: auto;
+
+  & > table, .paginator {
+    min-width: 700px;
+  }
 }
 
 .mat-row  {
@@ -39,6 +43,7 @@ th.mat-header-cell, td.mat-cell {
 }
 
 .del {
+  min-width: 155px;
   display: flex;
   align-items: center;
 
@@ -49,6 +54,10 @@ th.mat-header-cell, td.mat-cell {
     margin-left: 5px;
     font-size: 14px;
   }
+}
+
+.votes {
+  width: 70px;
 }
 
 @media (max-width: 700px) {

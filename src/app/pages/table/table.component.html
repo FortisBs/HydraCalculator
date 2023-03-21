@@ -13,7 +13,6 @@
 
   <div class="mat-elevation-z8 table">
     <table mat-table matSort [dataSource]="dataSource">
-
       <ng-container matColumnDef="rank">
         <th mat-header-cell mat-sort-header="rank" *matHeaderCellDef>Rank</th>
         <td mat-cell *matCellDef="let element">{{ element.rank }}</td>
@@ -41,10 +40,10 @@
 
       <ng-container matColumnDef="votes">
         <th mat-header-cell mat-sort-header="votes" *matHeaderCellDef>Votes</th>
-        <td mat-cell *matCellDef="let element">{{ element.votes | number:'1.0-0' }}</td>
+        <td mat-cell *matCellDef="let element" class="votes">{{ element.votes | number:'1.0-0' }}</td>
       </ng-container>
 
-      <ng-container matColumnDef="daily" class="mobile-hide">
+      <ng-container matColumnDef="daily">
         <th mat-header-cell mat-sort-header="daily" *matHeaderCellDef>Daily rewards</th>
         <td mat-cell *matCellDef="let element">{{ element.payment | number:'1.0-2' }}</td>
       </ng-container>
@@ -54,7 +53,7 @@
         <td mat-cell *matCellDef="let element">{{ (element.payment * 30) | number:'1.0-2' }}</td>
       </ng-container>
 
-      <ng-container matColumnDef="yearly" class="mobile-hide">
+      <ng-container matColumnDef="yearly">
         <th mat-header-cell mat-sort-header="yearly" *matHeaderCellDef>Yearly rewards</th>
         <td mat-cell *matCellDef="let element">{{ (element.payment * 365) | number:'1.0-2' }}</td>
       </ng-container>
@@ -65,9 +64,9 @@
       <tr class="mat-row" *matNoDataRow>
         <td class="mat-cell" colspan="7">No delegates matching the filter "{{ filter.value }}"</td>
       </tr>
-
     </table>
-    <mat-paginator [pageSizeOptions]="[10, 25, 53]"></mat-paginator>
+
+    <mat-paginator class="paginator" [pageSizeOptions]="[10, 25, 53]"></mat-paginator>
 
     <ngx-ui-loader [loaderId]="'table-loader'"
                    overlayColor="rgba(48,48,48,0.3)"
