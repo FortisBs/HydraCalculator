@@ -3,7 +3,6 @@ import { HydraledgerService } from "../../../shared/services/hydraledger.service
 import { IDelegate } from "../../../shared/models/delegate.interface";
 import { delShareData } from "../../../utils/del-share";
 import { IWallet } from "../../../shared/models/wallet.interface";
-import { NgxUiLoaderService } from "ngx-ui-loader";
 import { Subscription, switchMap } from "rxjs";
 import { OwnDelegate } from "../../../shared/models/user.interface";
 import { DelegatesService } from "../../../shared/services/delegates.service";
@@ -14,18 +13,17 @@ import { DelegatesService } from "../../../shared/services/delegates.service";
   styleUrls: ['./calculator.component.scss']
 })
 export class CalculatorComponent implements OnInit {
-  hydAmount: number = 100000;
-  hydAddress: string = '';
-  votedDelegate: string = '';
-  isValidAddress: boolean = true;
-  openVoting: boolean = false;
+  hydAmount = 100000;
+  hydAddress = '';
+  votedDelegate = '';
+  isValidAddress = true;
+  openVoting = false;
   delegates: IDelegate[] = [];
   subscription!: Subscription;
 
   constructor(
     private hydraledgerService: HydraledgerService,
-    private delegatesService: DelegatesService,
-    private ngxLoader: NgxUiLoaderService
+    private delegatesService: DelegatesService
   ) {}
 
   ngOnInit(): void {
@@ -76,12 +74,10 @@ export class CalculatorComponent implements OnInit {
   }
 
   recalculate(): void {
-    this.ngxLoader.startLoader('table-loader');
     this.delegates.forEach((delegate: IDelegate) => {
       delegate.payment = this.calcReward(delegate.votes, delegate.share);
     });
     this.hydraledgerService.updateDelegateList(this.delegates);
-    this.ngxLoader.stopLoader('table-loader');
   }
 
   calcByAddress(): void {
@@ -98,9 +94,11 @@ export class CalculatorComponent implements OnInit {
         this.recalculate();
 
         if (wallet.vote) {
-          this.hydraledgerService.getDelegateBy('publicKey', wallet.vote).subscribe((delegate) => {
-            this.votedDelegate = delegate.username;
-          });
+          this.hydraledgerService
+            .getDelegateBy('publicKey', wallet.vote)
+            .subscribe((delegate) => {
+              this.votedDelegate = delegate.username;
+            });
         } else {
           this.votedDelegate = '';
         }
@@ -117,7 +115,6 @@ export class CalculatorComponent implements OnInit {
   }
 
   recalculateFromVoting(simulatedDelegate: string): void {
-    this.ngxLoader.startLoader('table-loader');
     this.delegates.forEach((delegate: IDelegate) => {
       if (delegate.username === this.votedDelegate) {
         delegate.votes -= this.hydAmount;
@@ -129,6 +126,5 @@ export class CalculatorComponent implements OnInit {
     });
     this.votedDelegate = simulatedDelegate;
     this.hydraledgerService.updateDelegateList(this.delegates);
-    this.ngxLoader.stopLoader('table-loader');
   }
 }

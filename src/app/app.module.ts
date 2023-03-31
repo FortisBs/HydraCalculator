@@ -3,11 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from "@angular/common/http";
-import { NgxUiLoaderModule } from "ngx-ui-loader";
-import { preloaderConfig } from "./utils/preloader-config";
-
-import { AppComponent } from './app.component';
 import { CoreModule } from "./core/core.module";
+import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [AppComponent],
@@ -16,7 +13,6 @@ import { CoreModule } from "./core/core.module";
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
-    NgxUiLoaderModule.forRoot(preloaderConfig),
     CoreModule
   ],
   providers: [],
