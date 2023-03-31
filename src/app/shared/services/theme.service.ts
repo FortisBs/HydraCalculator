@@ -1,5 +1,4 @@
 import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
-import { getColor, preloaderConfig } from "../../utils/preloader-config";
 
 export type Theme = 'dark-theme' | 'light-theme';
 
@@ -25,8 +24,6 @@ export class ThemeService {
 
     this.renderer.removeClass(document.body, previousColorTheme);
     this.renderer.addClass(document.body, theme);
-
-    preloaderConfig.overlayColor = getColor();
   }
 
   isDarkMode() {

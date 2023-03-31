@@ -12,9 +12,9 @@ import { Subscription } from "rxjs";
   styleUrls: ['./table.component.scss']
 })
 export class TableComponent implements OnInit, OnDestroy {
-  displayedColumns: string[] = ['rank', 'delegate', 'share', 'votes', 'daily', 'monthly', 'yearly'];
+  displayedColumns = ['rank', 'delegate', 'share', 'votes', 'daily', 'monthly', 'yearly'];
   dataSource!: MatTableDataSource<IDelegate>;
-  firstLoad: boolean = true;
+  firstLoad = true;
   subscription!: Subscription;
 
   @ViewChild(MatTable) table!: MatTable<IDelegate[]>;
@@ -48,9 +48,11 @@ export class TableComponent implements OnInit, OnDestroy {
 
   private mySort(data: IDelegate[], sort: MatSort) {
     return (data: IDelegate[], sort: MatSort) => {
+      this.paginator.pageIndex = 0;
+
       return data.sort((a: IDelegate, b: IDelegate) => {
         const isAsc = sort.direction === 'asc';
-        if (!sort.direction) return this.compare(a.rank, b.rank, true);
+
         switch (sort.active) {
           case 'rank': return this.compare(a.rank, b.rank, isAsc);
           case 'delegate': return this.compare(a.username, b.username, isAsc);
@@ -68,8 +70,8 @@ export class TableComponent implements OnInit, OnDestroy {
   private fillTable(data: IDelegate[]) {
     this.dataSource = new MatTableDataSource(data);
     this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
     this.dataSource.sortData = this.mySort(data, this.sort);
+    this.dataSource.sort = this.sort;
     this.dataSource.filterPredicate = (data: {username: string}, value:string) => {
       return data.username.trim().toLowerCase().includes(value);
     }
@@ -80,5 +82,4 @@ export class TableComponent implements OnInit, OnDestroy {
     this.dataSource.data = data;
     this.table.renderRows();
   }
-
 }

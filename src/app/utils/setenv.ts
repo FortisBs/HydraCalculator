@@ -10,10 +10,10 @@ const targetPath = isProduction
   ? `./src/environments/environment.prod.ts`
   : `./src/environments/environment.ts`;
 
-const environmentFileContent = `
-export const environment = {
-   production: ${isProduction},
-   serverUrl: "${process.env['SERVER_URL']}"
+const environmentFileContent =
+`export const environment = {
+  production: ${isProduction},
+  serverUrl: "${process.env['SERVER_URL']}"
 };
 `;
 
