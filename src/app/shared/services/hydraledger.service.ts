@@ -9,7 +9,7 @@ import { IWallet } from "../models/wallet.interface";
   providedIn: 'root'
 })
 export class HydraledgerService {
-  private url = 'https://explorer.hydraledger.io:4705/api/v2';
+  private url = 'https://explorer.hydraledger.tech:4705/api/v2';
   delegateList$ = new Subject<IDelegate[]>();
 
   constructor(private http: HttpClient) {}
