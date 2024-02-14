@@ -7,9 +7,9 @@
 //  If you specify typography styles for the components you use elsewhere, you should delete this line.
 //  If you don't need the default component typographies but still want the hierarchy styles,
 //  you can delete this line and instead use:
-//    `@include mat.legacy-typography-hierarchy(mat.define-legacy-typography-config());`
-@include mat.all-legacy-component-typographies();
-@include mat.legacy-core();
+//    `@include mat.legacy-typography-hierarchy(mat.define-typography-config());`
+@include mat.all-component-typographies();
+@include mat.core();
 
 $HydraCalculator-primary: mat.define-palette(mat.$deep-purple-palette);
 $HydraCalculator-accent: mat.define-palette(mat.$green-palette, 400);
@@ -33,11 +33,11 @@ $HydraCalculator-dark-theme: mat.define-dark-theme((
 
 
 .light-theme {
-  @include mat.all-legacy-component-themes($HydraCalculator-light-theme);
+  @include mat.all-component-themes($HydraCalculator-light-theme);
 }
 
 .dark-theme {
-  @include mat.all-legacy-component-themes($HydraCalculator-dark-theme);
+  @include mat.all-component-themes($HydraCalculator-dark-theme);
 }
 
 html, body { height: 100%; }

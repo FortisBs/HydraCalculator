@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit, TemplateRef } from '@angular/core';
 import { OwnDelegate } from "../../shared/models/user.interface";
-import { MatLegacyDialog as MatDialog } from "@angular/material/legacy-dialog";
+import { MatDialog } from "@angular/material/dialog";
 import { DelegatesService } from "../../shared/services/delegates.service";
 import { Observable } from "rxjs";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
