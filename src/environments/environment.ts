@@ -1,4 +1,5 @@
 export const environment = {
   production: false,
-  serverUrl: ''
+  hydraledgerExplorerUrl: 'https://explorer.hydraledger.tech:4705/api/v2',
+  serverUrl: 'http://localhost:3000'
 };
