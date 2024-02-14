@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  serverUrl: ''
+  hydraledgerExplorerUrl: 'https://explorer.hydraledger.tech:4705/api/v2',
+  serverUrl: 'https://hydra-calculator-server.vercel.app'
 };

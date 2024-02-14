@@ -4,12 +4,13 @@ import { map, Observable, Subject } from "rxjs";
 import { IDelegate } from "../models/delegate.interface";
 import { ITransaction } from "../models/transaction.interface";
 import { IWallet } from "../models/wallet.interface";
+import { environment } from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class HydraledgerService {
-  private url = 'https://explorer.hydraledger.tech:4705/api/v2';
+  private url = environment.hydraledgerExplorerUrl;
   delegateList$ = new Subject<IDelegate[]>();
 
   constructor(private http: HttpClient) {}
