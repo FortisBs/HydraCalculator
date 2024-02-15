@@ -1,7 +1,6 @@
 .upper-table {
   .suffix {
     display: block;
-    width: 24px !important;
     text-align: center;
   }
 
@@ -10,7 +9,7 @@
   }
 }
 
-th.mat-header-cell, td.mat-cell {
+th.mat-mdc-header-cell, td.mat-mdc-cell {
   padding-right: 20px;
 }
 
@@ -38,21 +37,23 @@ th.mat-header-cell, td.mat-cell {
   }
 }
 
-.mat-row  {
-  .mat-cell {
+.mat-mdc-row  {
+  .mat-mdc-cell {
     border-bottom: 1px solid transparent;
     border-top: 1px solid transparent;
   }
 
-  &:hover .mat-cell {
+  &:hover .mat-mdc-cell {
     border-color: currentColor;
   }
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of paginator that may no longer apply for the MDC version. */
 .mat-paginator-light {
   border-top: 1px solid rgba(0, 0, 0, 0.12);
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of paginator that may no longer apply for the MDC version. */
 .mat-paginator-dark {
   border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
@@ -73,6 +74,14 @@ th.mat-header-cell, td.mat-cell {
 
 .votes {
   width: 70px;
+}
+
+.filter {
+  width: 200px;
+}
+
+.mat-mdc-row {
+  height: 40px;
 }
 
 @media (max-width: 700px) {

@@ -5,7 +5,7 @@
 
 .suffix {
   display: block;
-  width: 24px !important;
+  width: 24px;
   text-align: center;
 }
 
@@ -16,16 +16,14 @@
 .add-amount {
   display: flex;
   gap: 20px;
-  height: 72px;
   overflow: hidden;
 
   .add-amount-input {
     width: 210px;
   }
 
-  button {
-    height: 53px;
-    width: 90px;
+  input::placeholder {
+    font-size: 14px;
   }
 }
 
@@ -40,4 +38,8 @@ input::-webkit-inner-spin-button {
   font-size: 12px;
   font-weight: bold;
   color: red;
+}
+
+.calc-btn {
+  height: 56px;
 }

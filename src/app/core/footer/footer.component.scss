@@ -7,7 +7,7 @@ footer {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  padding: 10px 0;
+  padding: 3px 0;
   gap: 20px;
   font-size: 16px;
 }
@@ -31,11 +31,11 @@ p {
   }
 }
 
-.donate {
-  height: 32px;
-  width: 32px;
+.footer-donate {
+  display: flex;
+  align-items: center;
 
-  &:hover {
+  .donate:hover {
     color: red;
   }
 }

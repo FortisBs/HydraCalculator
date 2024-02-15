@@ -6,7 +6,7 @@
         <input matInput type="number" [(ngModel)]="hydAmount" autocomplete="off" name="hydAmount">
         <span matSuffix class="suffix">Ħ</span>
       </mat-form-field>
-      <button mat-flat-button (click)="recalculate()" color="primary">Calculate</button>
+      <button mat-flat-button (click)="recalculate()" color="primary" class="calc-btn">Calculate</button>
     </div>
   </mat-tab>
 
@@ -19,7 +19,7 @@
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
-      <button mat-flat-button (click)="calcByAddress()" color="primary">Calculate</button>
+      <button mat-flat-button (click)="calcByAddress()" color="primary" class="calc-btn">Calculate</button>
     </div>
     <p class="address-error" *ngIf="!isValidAddress">Wrong address</p>
   </mat-tab>
