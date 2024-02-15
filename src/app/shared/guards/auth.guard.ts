@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Router, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +7,7 @@ import { Observable } from 'rxjs';
 export class AuthGuard  {
   constructor(private router: Router) {}
 
-  canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+  canActivate(): boolean | UrlTree {
     const isAuthenticated = localStorage.getItem('token');
     return isAuthenticated ? true : this.router.createUrlTree(['/']);
   }

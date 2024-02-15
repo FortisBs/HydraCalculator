@@ -1,44 +1,41 @@
 @use '@angular/material' as mat;
 
-// TODO(v15): As of v15 mat.legacy-core no longer includes default typography styles.
-//  The following line adds:
-//    1. Default typography styles for all components
-//    2. Styles for typography hierarchy classes (e.g. .mat-headline-1)
-//  If you specify typography styles for the components you use elsewhere, you should delete this line.
-//  If you don't need the default component typographies but still want the hierarchy styles,
-//  you can delete this line and instead use:
-//    `@include mat.legacy-typography-hierarchy(mat.define-typography-config());`
-@include mat.all-component-typographies();
 @include mat.core();
+@include mat.all-component-typographies();
 
-$HydraCalculator-primary: mat.define-palette(mat.$deep-purple-palette);
-$HydraCalculator-accent: mat.define-palette(mat.$green-palette, 400);
-$HydraCalculator-warn: mat.define-palette(mat.$red-palette, 400);
+$app-primary: mat.define-palette(mat.$deep-purple-palette);
+$app-accent: mat.define-palette(mat.$green-palette, 400);
+$app-warn: mat.define-palette(mat.$red-palette, 400);
 
-$HydraCalculator-light-theme: mat.define-light-theme((
+$app-light-theme: mat.define-light-theme((
   color: (
-    primary: $HydraCalculator-primary,
-    accent: $HydraCalculator-accent,
-    warn: $HydraCalculator-warn,
+    primary: $app-primary,
+    accent: $app-accent,
+    warn: $app-warn,
   )
 ));
 
-$HydraCalculator-dark-theme: mat.define-dark-theme((
+$app-dark-theme: mat.define-dark-theme((
   color: (
-    primary: $HydraCalculator-primary,
-    accent: $HydraCalculator-accent,
-    warn: $HydraCalculator-warn,
+    primary: $app-primary,
+    accent: $app-accent,
+    warn: $app-warn,
   )
 ));
-
 
 .light-theme {
-  @include mat.all-component-themes($HydraCalculator-light-theme);
+  @include mat.all-component-themes($app-light-theme);
 }
 
 .dark-theme {
-  @include mat.all-component-themes($HydraCalculator-dark-theme);
+  @include mat.all-component-themes($app-dark-theme);
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+  margin: 0;
+}
+
+.mat-mdc-card-title,
+.mat-mdc-card-subtitle {
+  padding: 16px 16px 0;
+}
