@@ -1,15 +1,24 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { IDelegate } from "../../shared/models/delegate.interface";
 import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
-import { MatTable, MatTableDataSource } from "@angular/material/table";
+import { MatSort, MatSortHeader } from "@angular/material/sort";
+import { MatTable, MatTableDataSource, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow } from "@angular/material/table";
 import { HydraledgerService } from "../../shared/services/hydraledger.service";
 import { Subscription } from "rxjs";
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { NgIf, DecimalPipe, PercentPipe } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { MatIconButton } from '@angular/material/button';
+import { MatInput } from '@angular/material/input';
+import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
+import { CalculatorComponent } from './calculator/calculator.component';
 
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
-  styleUrls: ['./table.component.scss']
+  styleUrls: ['./table.component.scss'],
+  standalone: true,
+  imports: [CalculatorComponent, MatFormField, MatLabel, MatInput, MatIconButton, MatSuffix, MatIcon, NgIf, MatProgressSpinner, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow, MatPaginator, DecimalPipe, PercentPipe]
 })
 export class TableComponent implements OnInit, OnDestroy {
   displayedColumns = ['rank', 'delegate', 'share', 'votes', 'daily', 'monthly', 'yearly'];

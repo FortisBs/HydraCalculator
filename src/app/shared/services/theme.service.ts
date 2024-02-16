@@ -1,41 +1,40 @@
 import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
-
-export type Theme = 'dark-theme' | 'light-theme';
+import { Theme } from "../models/theme.enum";
 
 @Injectable({
   providedIn: 'root',
 })
 export class ThemeService {
-  private renderer: Renderer2;
-  private colorTheme!: Theme;
+  private _renderer: Renderer2;
+  private _colorTheme!: Theme;
 
   constructor(rendererFactory: RendererFactory2) {
-    this.renderer = rendererFactory.createRenderer(null, null);
+    this._renderer = rendererFactory.createRenderer(null, null);
   }
 
   initTheme(): void {
     this.getColorTheme();
-    this.renderer.addClass(document.body, this.colorTheme);
+    this._renderer.addClass(document.body, this._colorTheme);
   }
 
-  update(theme: Theme) {
+  update(theme: Theme): void {
     this.setColorTheme(theme);
-    const previousColorTheme: Theme = theme === 'dark-theme' ? 'light-theme' : 'dark-theme';
+    const previousColorTheme: Theme = theme === Theme.DARK ? Theme.LIGHT : Theme.DARK;
 
-    this.renderer.removeClass(document.body, previousColorTheme);
-    this.renderer.addClass(document.body, theme);
+    this._renderer.removeClass(document.body, previousColorTheme);
+    this._renderer.addClass(document.body, theme);
   }
 
-  isDarkMode() {
-    return this.colorTheme === 'dark-theme';
+  isDarkMode(): boolean {
+    return this._colorTheme === Theme.DARK;
   }
 
-  private setColorTheme(theme: Theme) {
-    this.colorTheme = theme;
+  private setColorTheme(theme: Theme): void {
+    this._colorTheme = theme;
     localStorage.setItem('user-theme', theme);
   }
 
-  private getColorTheme() {
-    this.colorTheme = localStorage.getItem('user-theme') as Theme ?? 'light-theme';
+  private getColorTheme(): void {
+    this._colorTheme = localStorage.getItem('user-theme') as Theme ?? Theme.LIGHT;
   }
 }

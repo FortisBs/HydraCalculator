@@ -1,4 +1,4 @@
-export const delShareData: any = {
+export const delegatesShares: { [key: string]: number } = {
   'bridge': 0,
   '90hyd_4': 0.7,
   'flexxnode80percent': 0.8,

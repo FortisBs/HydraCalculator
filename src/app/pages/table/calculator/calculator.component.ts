@@ -1,16 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { HydraledgerService } from "../../../shared/services/hydraledger.service";
 import { IDelegate } from "../../../shared/models/delegate.interface";
-import { delShareData } from "../../../utils/del-share";
+import { delegatesShares } from "../../../shared/constants/delegates-shares";
 import { IWallet } from "../../../shared/models/wallet.interface";
 import { Subscription, switchMap } from "rxjs";
 import { OwnDelegate } from "../../../shared/models/user.interface";
 import { DelegatesService } from "../../../shared/services/delegates.service";
+import { VotingComponent } from '../voting/voting.component';
+import { NgIf } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { FormsModule } from '@angular/forms';
+import { MatInput } from '@angular/material/input';
+import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
+import { MatTabGroup, MatTab } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-calculator',
   templateUrl: './calculator.component.html',
-  styleUrls: ['./calculator.component.scss']
+  styleUrls: ['./calculator.component.scss'],
+  standalone: true,
+  imports: [VotingComponent, MatTabGroup, MatTab, MatFormField, MatLabel, MatInput, FormsModule, MatSuffix, MatButton, MatIconButton, MatIcon, NgIf]
 })
 export class CalculatorComponent implements OnInit {
   hydAmount = 100000;
@@ -65,7 +75,7 @@ export class CalculatorComponent implements OnInit {
 
       delegate.share = delegate.isRegistered
         ? registeredDelShareRate
-        : delShareData[delegate.username] ?? 0;
+        : delegatesShares[delegate.username] ?? 0;
       delegate.votes = +delegate.votes / 10**8;
       delegate.payment = this.calcReward(delegate.votes, delegate.share);
 
