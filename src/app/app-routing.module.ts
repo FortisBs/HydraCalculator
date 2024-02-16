@@ -5,20 +5,20 @@ import { AuthGuard } from "./shared/guards/auth.guard";
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./pages/table/table.module').then(m => m.TableModule)
+    loadComponent: () => import('./pages/table/table.component').then(c => c.TableComponent)
   },
   {
     path: 'login',
-    loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule)
+    loadComponent: () => import('./pages/login/login.component').then(c => c.LoginComponent)
   },
   {
     path: 'registration',
-    loadChildren: () => import('./pages/registration/registration.module').then(m => m.RegistrationModule)
+    loadComponent: () => import('./pages/registration/registration.component').then(c => c.RegistrationComponent)
   },
   {
     path: 'profile',
     canActivate: [AuthGuard],
-    loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfileModule)
+    loadChildren: () => import('./pages/profile/constants/profile-routes').then(m => m.profileRoutes)
   },
   { path: '**', redirectTo: '' }
 ];
@@ -27,4 +27,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

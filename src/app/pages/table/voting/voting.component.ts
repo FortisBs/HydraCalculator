@@ -1,10 +1,19 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { HydraledgerService } from "../../../shared/services/hydraledger.service";
+import { FormsModule } from '@angular/forms';
+import { MatInput } from '@angular/material/input';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIconButton } from '@angular/material/button';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-voting',
   templateUrl: './voting.component.html',
-  styleUrls: ['./voting.component.scss']
+  styleUrls: ['./voting.component.scss'],
+  standalone: true,
+  imports: [NgIf, MatIconButton, MatTooltip, MatIcon, MatFormField, MatLabel, MatInput, FormsModule]
 })
 export class VotingComponent {
   @Input() votedDelegate = '';
