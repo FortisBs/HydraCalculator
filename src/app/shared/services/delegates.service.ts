@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import {inject, Injectable, Signal} from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { BehaviorSubject, Observable, of, switchMap } from "rxjs";
-import { NewDelegate, OwnDelegate } from "../models/user.interface";
+import { BehaviorSubject, Observable, of } from "rxjs";
+import {NewDelegate, OwnDelegate, User} from "../models/user.interface";
 import { AuthService } from "./auth.service";
 import { environment } from "../../../environments/environment";
 
@@ -9,43 +9,46 @@ import { environment } from "../../../environments/environment";
   providedIn: 'root'
 })
 export class DelegatesService {
+  private _http: HttpClient = inject(HttpClient);
+  private _user: Signal<User | null> = inject(AuthService).user;
+
   private url = environment.serverUrl + '/delegates';
   private userDelegates: OwnDelegate[] = [];
+
   userDelegates$ = new BehaviorSubject<OwnDelegate[]>([]);
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
-
   addDelegate(delegate: NewDelegate): Observable<unknown> {
-    return this.http.post(this.url, delegate, this.authHeaders);
+    return this._http.post(this.url, delegate, this.authHeaders);
   }
 
   getDelegateByName(name: string): Observable<OwnDelegate | null> {
-    return this.http.get<OwnDelegate | null>(`${this.url}/getBy?name=${name}`);
+    return this._http.get<OwnDelegate | null>(`${this.url}/getBy?name=${name}`);
   }
 
   getUserDelegates(): void {
-    this.authService.user$.pipe(
-      switchMap((user) => {
-        if (user?.roles.includes('USER')) {
-          return this.http.get<OwnDelegate[]>(`${this.url}/getBy?userId=${user?._id}`);
-        }
-        if (user?.roles.includes('ADMIN')) {
-          return this.getRegisteredDelegates();
-        }
-        return of([]);
-      })
-    ).subscribe((delegates) => {
+    const user: User | null = this._user();
+    let delegates$: Observable<OwnDelegate[]> = of([]);
+
+    if (user?.roles.includes('USER')) {
+      delegates$ = this._http.get<OwnDelegate[]>(`${this.url}/getBy?userId=${user?._id}`);
+    }
+
+    if (user?.roles.includes('ADMIN')) {
+      delegates$ = this.getRegisteredDelegates();
+    }
+
+    delegates$.subscribe((delegates) => {
       this.userDelegates = delegates;
       this.userDelegates$.next([...this.userDelegates]);
     });
   }
 
   getRegisteredDelegates(): Observable<OwnDelegate[]> {
-    return this.http.get<OwnDelegate[]>(this.url);
+    return this._http.get<OwnDelegate[]>(this.url);
   }
 
   updateDelegate(delegate: OwnDelegate): void {
-    this.http.patch<OwnDelegate>(this.url, delegate, this.authHeaders)
+    this._http.patch<OwnDelegate>(this.url, delegate, this.authHeaders)
       .subscribe((updatedDelegate) => {
         const i = this.userDelegates.findIndex((del) => del._id === updatedDelegate._id);
         this.userDelegates[i] = updatedDelegate;
@@ -54,7 +57,7 @@ export class DelegatesService {
   }
 
   deleteDelegate(id: string): void {
-    this.http.delete(this.url + '/' + id, this.authHeaders)
+    this._http.delete(this.url + '/' + id, this.authHeaders)
       .subscribe(() => {
         const i = this.userDelegates.findIndex((del) => del._id === id);
         this.userDelegates.splice(i, 1);

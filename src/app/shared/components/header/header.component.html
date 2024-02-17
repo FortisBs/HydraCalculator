@@ -7,7 +7,7 @@
 
     <div>
       <div class="header-links">
-        <ng-container *ngIf="user$ | async; else login">
+        <ng-container *ngIf="user(); else login">
           <a routerLink="/profile">Profile</a>
           <span> | </span>
           <a routerLink="/" (click)="onLogout()">Logout</a>
@@ -22,7 +22,7 @@
 
       <img src="../../../../assets/day-and-night.png"
            class="theme-icon"
-           (click)="toggleDarkMode()"
+           (click)="toggleTheme()"
            alt="Theme">
     </div>
   </header>

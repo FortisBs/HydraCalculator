@@ -5,7 +5,7 @@ import { AuthService } from "../../../shared/services/auth.service";
 import { MatStepper, MatStep, MatStepLabel } from "@angular/material/stepper";
 import { NewDelegate } from "../../../shared/models/user.interface";
 import { DelegatesService } from "../../../shared/services/delegates.service";
-import { Observable, switchMap } from "rxjs";
+import { Observable } from "rxjs";
 import { NgIf } from '@angular/common';
 import { MatInput } from '@angular/material/input';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
@@ -124,15 +124,12 @@ export class AddDelegateComponent {
   }
 
   private createDelegate(): Observable<unknown> {
-    return this.authService.user$.pipe(
-      switchMap((user) => {
-        const delegate: NewDelegate = {
-          name: this.delegateForm.value.name!,
-          shareRate: this.delegateForm.value.shareRate!,
-          userId: user!._id
-        };
-        return this.delegatesService.addDelegate(delegate);
-      })
-    );
+    const delegate: NewDelegate = {
+      name: this.delegateForm.value.name!,
+      shareRate: this.delegateForm.value.shareRate!,
+      userId: this.authService.user()!._id
+    };
+
+    return this.delegatesService.addDelegate(delegate);
   }
 }

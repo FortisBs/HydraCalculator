@@ -1,40 +1,38 @@
-import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
+import { effect, Injectable, RendererFactory2, signal, Signal, WritableSignal } from '@angular/core';
 import { Theme } from "../models/theme.enum";
 
 @Injectable({
   providedIn: 'root',
 })
 export class ThemeService {
-  private _renderer: Renderer2;
-  private _colorTheme!: Theme;
+  private _appTheme: WritableSignal<Theme> = signal(this._userTheme);
+  appTheme: Signal<Theme> = this._appTheme.asReadonly();
 
-  constructor(rendererFactory: RendererFactory2) {
-    this._renderer = rendererFactory.createRenderer(null, null);
+  constructor(private _rendererFactory: RendererFactory2) {
+    const renderer = this._rendererFactory.createRenderer(null, null);
+
+    effect(() => {
+      renderer.removeClass(document.body, Theme.LIGHT);
+      renderer.removeClass(document.body, Theme.DARK);
+
+      renderer.addClass(document.body, this.appTheme());
+    });
   }
 
-  initTheme(): void {
-    this.getColorTheme();
-    this._renderer.addClass(document.body, this._colorTheme);
+  toggleTheme(): void {
+    this._appTheme.update((currentTheme) => {
+      const newTheme: Theme = currentTheme === Theme.LIGHT ? Theme.DARK : Theme.LIGHT;
+      this._userTheme = newTheme;
+
+      return newTheme;
+    });
   }
 
-  update(theme: Theme): void {
-    this.setColorTheme(theme);
-    const previousColorTheme: Theme = theme === Theme.DARK ? Theme.LIGHT : Theme.DARK;
-
-    this._renderer.removeClass(document.body, previousColorTheme);
-    this._renderer.addClass(document.body, theme);
-  }
-
-  isDarkMode(): boolean {
-    return this._colorTheme === Theme.DARK;
-  }
-
-  private setColorTheme(theme: Theme): void {
-    this._colorTheme = theme;
+  private set _userTheme(theme: Theme) {
     localStorage.setItem('user-theme', theme);
   }
 
-  private getColorTheme(): void {
-    this._colorTheme = localStorage.getItem('user-theme') as Theme ?? Theme.LIGHT;
+  private get _userTheme(): Theme {
+    return localStorage.getItem('user-theme') as Theme ?? Theme.LIGHT;
   }
 }
