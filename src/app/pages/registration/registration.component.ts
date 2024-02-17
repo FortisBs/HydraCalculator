@@ -145,7 +145,7 @@ export class RegistrationComponent {
 
   private createUser(): Observable<LoginResponse> {
     const { username, password } = this.profileForm.value;
-    return this.authService.createUser(username!, password!).pipe(
+    return this.authService.registerUser(username!, password!).pipe(
       switchMap(() => this.authService.login(username!, password!))
     );
   }

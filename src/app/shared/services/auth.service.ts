@@ -1,26 +1,31 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { LoginResponse, User } from "../models/user.interface";
-import { BehaviorSubject, Observable, tap } from "rxjs";
+import { Observable, tap } from "rxjs";
 import { environment } from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private url = environment.serverUrl + '/auth';
-  user$ = new BehaviorSubject<User | null>(null);
+  private _url = environment.serverUrl + '/auth';
+  private _user: WritableSignal<User | null> = signal(null);
 
-  constructor(private http: HttpClient) {}
+  user: Signal<User | null> = this._user.asReadonly();
 
-  createUser(username: string, password: string) {
-    return this.http.post(`${this.url}/registration`, { username, password });
+  constructor(private http: HttpClient) {
+    this._autoLogin();
+  }
+
+  registerUser(username: string, password: string): Observable<void> {
+    return this.http.post<void>(`${this._url}/registration`, { username, password });
   }
 
   login(username: string, password: string): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.url}/login`, { username, password }).pipe(
+    return this.http.post<LoginResponse>(`${this._url}/login`, { username, password }).pipe(
       tap((res) => {
-        this.user$.next(res.user);
+        this._user.set(res.user);
+
         localStorage.setItem('user', JSON.stringify(res.user));
         localStorage.setItem('token', res.token);
       })
@@ -28,15 +33,16 @@ export class AuthService {
   }
 
   logout(): void {
-    this.user$.next(null);
+    this._user.set(null);
+
     localStorage.removeItem('user');
     localStorage.removeItem('token');
   }
 
-  autoLogin(): void {
+  private _autoLogin(): void {
     const token = localStorage.getItem('token');
     const userLS = localStorage.getItem('user');
-    const user = token && userLS ? JSON.parse(userLS) as User : null;
-    this.user$.next(user);
+
+    (token && userLS) && this._user.set(JSON.parse(userLS));
   }
 }

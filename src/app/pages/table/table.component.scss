@@ -48,14 +48,8 @@ th.mat-mdc-header-cell, td.mat-mdc-cell {
   }
 }
 
-/* TODO(mdc-migration): The following rule targets internal classes of paginator that may no longer apply for the MDC version. */
-.mat-paginator-light {
-  border-top: 1px solid rgba(0, 0, 0, 0.12);
-}
-
-/* TODO(mdc-migration): The following rule targets internal classes of paginator that may no longer apply for the MDC version. */
-.mat-paginator-dark {
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+.paginator {
+  border-top: 1px solid var(--mat-table-row-item-outline-color);
 }
 
 .del {

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HydraledgerService } from "../../../shared/services/hydraledger.service";
 import { IDelegate } from "../../../shared/models/delegate.interface";
-import { delegatesShares } from "../../../shared/constants/delegates-shares";
 import { IWallet } from "../../../shared/models/wallet.interface";
 import { Subscription, switchMap } from "rxjs";
 import { OwnDelegate } from "../../../shared/models/user.interface";
@@ -73,9 +72,7 @@ export class CalculatorComponent implements OnInit {
         return registeredStatus;
       });
 
-      delegate.share = delegate.isRegistered
-        ? registeredDelShareRate
-        : delegatesShares[delegate.username] ?? 0;
+      delegate.share = registeredDelShareRate ?? 0;
       delegate.votes = +delegate.votes / 10**8;
       delegate.payment = this.calcReward(delegate.votes, delegate.share);
 
