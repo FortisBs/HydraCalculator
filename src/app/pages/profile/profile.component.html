@@ -17,7 +17,7 @@
         </mat-expansion-panel-header>
       </mat-expansion-panel>
 
-      <mat-expansion-panel *ngFor="let del of userDelegates$ | async">
+      <mat-expansion-panel *ngFor="let del of userDelegates()">
         <mat-expansion-panel-header>
           <mat-panel-title class="delegate">{{ del.name }}</mat-panel-title>
           <mat-panel-description>{{ del.shareRate | percent }}</mat-panel-description>

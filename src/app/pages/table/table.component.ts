@@ -1,10 +1,9 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, effect, ViewChild } from '@angular/core';
 import { IDelegate } from "../../shared/models/delegate.interface";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort, MatSortHeader } from "@angular/material/sort";
 import { MatTable, MatTableDataSource, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow } from "@angular/material/table";
 import { HydraledgerService } from "../../shared/services/hydraledger.service";
-import { Subscription } from "rxjs";
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { NgIf, DecimalPipe, PercentPipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
@@ -20,26 +19,20 @@ import { CalculatorComponent } from './calculator/calculator.component';
   standalone: true,
   imports: [CalculatorComponent, MatFormField, MatLabel, MatInput, MatIconButton, MatSuffix, MatIcon, NgIf, MatProgressSpinner, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow, MatPaginator, DecimalPipe, PercentPipe]
 })
-export class TableComponent implements OnInit, OnDestroy {
+export class TableComponent {
   displayedColumns = ['rank', 'delegate', 'share', 'votes', 'daily', 'monthly', 'yearly'];
   dataSource!: MatTableDataSource<IDelegate>;
   firstLoad = true;
-  subscription!: Subscription;
 
   @ViewChild(MatTable) table!: MatTable<IDelegate[]>;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private delegateService: HydraledgerService) {}
-
-  ngOnInit(): void {
-    this.subscription = this.delegateService.delegateList$.subscribe((data) => {
-      (this.firstLoad) ? this.fillTable(data) : this.refreshTable(data);
+  constructor(private hydraledgerService: HydraledgerService) {
+    effect(() => {
+      const delegates: IDelegate[] = this.hydraledgerService.delegateList();
+      this.firstLoad ? this.fillTable(delegates) : this.refreshTable(delegates);
     });
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
   }
 
   applyFilter(filterValue: string): void {

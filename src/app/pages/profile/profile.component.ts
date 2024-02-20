@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, Component, OnInit, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, Signal, TemplateRef } from '@angular/core';
 import { OwnDelegate } from "../../shared/models/user.interface";
 import { MatDialog, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from "@angular/material/dialog";
 import { DelegatesService } from "../../shared/services/delegates.service";
-import { Observable } from "rxjs";
 import { FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatInput } from '@angular/material/input';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
@@ -23,14 +22,14 @@ import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
   imports: [MatCard, MatCardTitle, MatMiniFabAnchor, MatTooltip, RouterLink, MatIcon, MatCardContent, MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, NgFor, MatButton, FormsModule, ReactiveFormsModule, MatDialogTitle, MatDialogContent, MatFormField, MatLabel, MatInput, MatDialogActions, MatDialogClose, AsyncPipe, PercentPipe]
 })
 export class ProfileComponent implements OnInit {
-  userDelegates$!: Observable<OwnDelegate[]>;
+  private delegatesService: DelegatesService = inject(DelegatesService);
+  private dialog: MatDialog = inject(MatDialog);
+
+  userDelegates: Signal<OwnDelegate[]> = this.delegatesService.userDelegates;
   editingDelegate!: OwnDelegate;
   editForm!: FormGroup;
 
-  constructor(private delegatesService: DelegatesService, private dialog: MatDialog) {}
-
   ngOnInit(): void {
-    this.userDelegates$ = this.delegatesService.userDelegates$;
     this.delegatesService.getUserDelegates();
   }
 
