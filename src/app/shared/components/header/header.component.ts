@@ -2,7 +2,6 @@ import {ChangeDetectionStrategy, Component, inject, Signal} from '@angular/core'
 import {ThemeService} from "../../services/theme.service";
 import {AuthService} from "../../services/auth.service";
 import {User} from "../../models/user.interface";
-import {AsyncPipe, NgIf} from '@angular/common';
 import {RouterLink} from '@angular/router';
 import {MatToolbar} from '@angular/material/toolbar';
 
@@ -12,7 +11,7 @@ import {MatToolbar} from '@angular/material/toolbar';
   styleUrls: ['./header.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [MatToolbar, RouterLink, NgIf, AsyncPipe]
+  imports: [MatToolbar, RouterLink]
 })
 export class HeaderComponent {
   private _themeService: ThemeService = inject(ThemeService);

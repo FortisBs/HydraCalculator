@@ -6,14 +6,13 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatIconButton } from '@angular/material/button';
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-voting',
   templateUrl: './voting.component.html',
   styleUrls: ['./voting.component.scss'],
   standalone: true,
-  imports: [NgIf, MatIconButton, MatTooltip, MatIcon, MatFormField, MatLabel, MatInput, FormsModule]
+  imports: [MatIconButton, MatTooltip, MatIcon, MatFormField, MatLabel, MatInput, FormsModule]
 })
 export class VotingComponent {
   @Input() votedDelegate = '';

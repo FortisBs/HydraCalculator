@@ -5,7 +5,7 @@ import { MatSort, MatSortHeader } from "@angular/material/sort";
 import { MatTable, MatTableDataSource, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow } from "@angular/material/table";
 import { HydraledgerService } from "../../shared/services/hydraledger.service";
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { NgIf, DecimalPipe, PercentPipe } from '@angular/common';
+import { DecimalPipe, PercentPipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { MatInput } from '@angular/material/input';
@@ -17,7 +17,7 @@ import { CalculatorComponent } from './calculator/calculator.component';
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
   standalone: true,
-  imports: [CalculatorComponent, MatFormField, MatLabel, MatInput, MatIconButton, MatSuffix, MatIcon, NgIf, MatProgressSpinner, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow, MatPaginator, DecimalPipe, PercentPipe]
+  imports: [CalculatorComponent, MatFormField, MatLabel, MatInput, MatIconButton, MatSuffix, MatIcon, MatProgressSpinner, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow, MatPaginator, DecimalPipe, PercentPipe]
 })
 export class TableComponent {
   displayedColumns = ['rank', 'delegate', 'share', 'votes', 'daily', 'monthly', 'yearly'];

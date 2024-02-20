@@ -1,7 +1,9 @@
 <mat-card appearance="outlined" class="mat-elevation-z8 login-container">
   <mat-card-title>Login</mat-card-title>
   <mat-card-content>
-    <p class="error" *ngIf="loginErrorMessage">{{ loginErrorMessage }}</p>
+    @if (loginErrorMessage) {
+      <p class="error">{{ loginErrorMessage }}</p>
+    }
 
     <form #form=ngForm (ngSubmit)="signIn(form.value)">
       <mat-form-field appearance="fill">

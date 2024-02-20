@@ -5,7 +5,6 @@ import { MatButton } from '@angular/material/button';
 import { MatInput } from '@angular/material/input';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
-import { NgIf } from '@angular/common';
 import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
 
 type LoginFormData = { username: string, password: string };
@@ -15,7 +14,7 @@ type LoginFormData = { username: string, password: string };
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   standalone: true,
-  imports: [MatCard, MatCardTitle, MatCardContent, NgIf, FormsModule, MatFormField, MatLabel, MatInput, MatButton]
+  imports: [MatCard, MatCardTitle, MatCardContent, FormsModule, MatFormField, MatLabel, MatInput, MatButton]
 })
 export class LoginComponent {
   loginErrorMessage = '';

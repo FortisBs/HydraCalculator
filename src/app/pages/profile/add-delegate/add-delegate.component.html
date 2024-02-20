@@ -27,7 +27,9 @@
             <button mat-flat-button color="primary" (click)="findDelegate(stepper)"
                     [disabled]="delegateForm.invalid || findDelegatePending"
             >Next</button>
-            <span class="error" *ngIf="delegateErrorMessage">{{ delegateErrorMessage }}</span>
+            @if (delegateErrorMessage) {
+              <span class="error">{{ delegateErrorMessage }}</span>
+            }
           </div>
 
         </form>
@@ -53,7 +55,9 @@
             <button mat-flat-button color="primary" [disabled]="transactionPending"
                     (click)="confirmTransaction(stepper)"
             >Next</button>
-            <span class="error" *ngIf="transactionErrorMessage">{{ transactionErrorMessage }}</span>
+            @if (transactionErrorMessage) {
+              <span class="error">{{ transactionErrorMessage }}</span>
+            }
           </div>
 
         </form>

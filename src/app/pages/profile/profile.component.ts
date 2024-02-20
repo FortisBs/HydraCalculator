@@ -5,7 +5,7 @@ import { DelegatesService } from "../../shared/services/delegates.service";
 import { FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatInput } from '@angular/material/input';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { NgFor, AsyncPipe, PercentPipe } from '@angular/common';
+import { PercentPipe } from '@angular/common';
 import { MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription } from '@angular/material/expansion';
 import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
@@ -19,7 +19,7 @@ import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
   styleUrls: ['./profile.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [MatCard, MatCardTitle, MatMiniFabAnchor, MatTooltip, RouterLink, MatIcon, MatCardContent, MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, NgFor, MatButton, FormsModule, ReactiveFormsModule, MatDialogTitle, MatDialogContent, MatFormField, MatLabel, MatInput, MatDialogActions, MatDialogClose, AsyncPipe, PercentPipe]
+  imports: [MatCard, MatCardTitle, MatMiniFabAnchor, MatTooltip, RouterLink, MatIcon, MatCardContent, MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatButton, FormsModule, ReactiveFormsModule, MatDialogTitle, MatDialogContent, MatFormField, MatLabel, MatInput, MatDialogActions, MatDialogClose, PercentPipe]
 })
 export class ProfileComponent implements OnInit {
   private delegatesService: DelegatesService = inject(DelegatesService);
