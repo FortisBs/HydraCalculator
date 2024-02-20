@@ -2,11 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { HydraledgerService } from "../../../shared/services/hydraledger.service";
 import { IDelegate } from "../../../shared/models/delegate.interface";
 import { IWallet } from "../../../shared/models/wallet.interface";
-import { Subscription, switchMap } from "rxjs";
+import { switchMap } from "rxjs";
 import { OwnDelegate } from "../../../shared/models/user.interface";
 import { DelegatesService } from "../../../shared/services/delegates.service";
 import { VotingComponent } from '../voting/voting.component';
-import { NgIf } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
@@ -19,7 +18,7 @@ import { MatTabGroup, MatTab } from '@angular/material/tabs';
   templateUrl: './calculator.component.html',
   styleUrls: ['./calculator.component.scss'],
   standalone: true,
-  imports: [VotingComponent, MatTabGroup, MatTab, MatFormField, MatLabel, MatInput, FormsModule, MatSuffix, MatButton, MatIconButton, MatIcon, NgIf]
+  imports: [VotingComponent, MatTabGroup, MatTab, MatFormField, MatLabel, MatInput, FormsModule, MatSuffix, MatButton, MatIconButton, MatIcon]
 })
 export class CalculatorComponent implements OnInit {
   hydAmount = 100000;
@@ -28,7 +27,6 @@ export class CalculatorComponent implements OnInit {
   isValidAddress = true;
   openVoting = false;
   delegates: IDelegate[] = [];
-  subscription!: Subscription;
 
   constructor(
     private hydraledgerService: HydraledgerService,

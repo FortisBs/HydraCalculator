@@ -6,7 +6,6 @@ import { MatStepper, MatStep, MatStepLabel } from "@angular/material/stepper";
 import { NewDelegate } from "../../../shared/models/user.interface";
 import { DelegatesService } from "../../../shared/services/delegates.service";
 import { Observable } from "rxjs";
-import { NgIf } from '@angular/common';
 import { MatInput } from '@angular/material/input';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
@@ -18,7 +17,7 @@ import { MatAnchor, MatButton } from '@angular/material/button';
   templateUrl: './add-delegate.component.html',
   styleUrls: ['./add-delegate.component.scss'],
   standalone: true,
-  imports: [MatAnchor, RouterLink, MatCard, MatCardTitle, MatCardContent, MatStepper, MatStep, FormsModule, ReactiveFormsModule, MatStepLabel, MatFormField, MatLabel, MatInput, MatButton, NgIf]
+  imports: [MatAnchor, RouterLink, MatCard, MatCardTitle, MatCardContent, MatStepper, MatStep, FormsModule, ReactiveFormsModule, MatStepLabel, MatFormField, MatLabel, MatInput, MatButton]
 })
 export class AddDelegateComponent {
   delegateAddress!: string;

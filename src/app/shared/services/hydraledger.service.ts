@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { map, Observable, Subject } from "rxjs";
+import { map, Observable } from "rxjs";
 import { IDelegate } from "../models/delegate.interface";
 import { ITransaction } from "../models/transaction.interface";
 import { IWallet } from "../models/wallet.interface";
@@ -11,12 +11,14 @@ import { environment } from "../../../environments/environment";
 })
 export class HydraledgerService {
   private url = environment.hydraledgerExplorerUrl;
-  delegateList$ = new Subject<IDelegate[]>();
+  private _delegateList: WritableSignal<IDelegate[]> = signal([]);
+
+  delegateList: Signal<IDelegate[]> = this._delegateList.asReadonly();
 
   constructor(private http: HttpClient) {}
 
   updateDelegateList(list: IDelegate[]) {
-    this.delegateList$.next(list);
+    this._delegateList.set(list);
   }
 
   getAll(): Observable<IDelegate[]> {

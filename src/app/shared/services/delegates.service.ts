@@ -1,7 +1,7 @@
-import {inject, Injectable, Signal} from '@angular/core';
+import { inject, Injectable, signal, Signal, WritableSignal } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { BehaviorSubject, Observable, of } from "rxjs";
-import {NewDelegate, OwnDelegate, User} from "../models/user.interface";
+import { Observable, of } from "rxjs";
+import { NewDelegate, OwnDelegate, User } from "../models/user.interface";
 import { AuthService } from "./auth.service";
 import { environment } from "../../../environments/environment";
 
@@ -13,9 +13,9 @@ export class DelegatesService {
   private _user: Signal<User | null> = inject(AuthService).user;
 
   private url = environment.serverUrl + '/delegates';
-  private userDelegates: OwnDelegate[] = [];
+  private _userDelegates: WritableSignal<OwnDelegate[]> = signal([]);
 
-  userDelegates$ = new BehaviorSubject<OwnDelegate[]>([]);
+  userDelegates: Signal<OwnDelegate[]> = this._userDelegates.asReadonly();
 
   addDelegate(delegate: NewDelegate): Observable<unknown> {
     return this._http.post(this.url, delegate, this.authHeaders);
@@ -38,8 +38,7 @@ export class DelegatesService {
     }
 
     delegates$.subscribe((delegates) => {
-      this.userDelegates = delegates;
-      this.userDelegates$.next([...this.userDelegates]);
+      this._userDelegates.set(delegates);
     });
   }
 
@@ -48,21 +47,21 @@ export class DelegatesService {
   }
 
   updateDelegate(delegate: OwnDelegate): void {
-    this._http.patch<OwnDelegate>(this.url, delegate, this.authHeaders)
-      .subscribe((updatedDelegate) => {
-        const i = this.userDelegates.findIndex((del) => del._id === updatedDelegate._id);
-        this.userDelegates[i] = updatedDelegate;
-        this.userDelegates$.next([...this.userDelegates]);
+    this._http.patch<OwnDelegate>(this.url, delegate, this.authHeaders).subscribe((updatedDelegate) => {
+      const updatedList = this.userDelegates().map((del) => {
+        return del._id === updatedDelegate._id ? updatedDelegate : del;
       });
+
+      this._userDelegates.set(updatedList);
+    });
   }
 
   deleteDelegate(id: string): void {
-    this._http.delete(this.url + '/' + id, this.authHeaders)
-      .subscribe(() => {
-        const i = this.userDelegates.findIndex((del) => del._id === id);
-        this.userDelegates.splice(i, 1);
-        this.userDelegates$.next([...this.userDelegates]);
-      });
+    this._http.delete(this.url + '/' + id, this.authHeaders).subscribe(() => {
+      const updatedList = this.userDelegates().filter((del) => del._id === id);
+
+      this._userDelegates.set(updatedList);
+    });
   }
 
   private get authHeaders(): { headers: HttpHeaders } {

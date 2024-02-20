@@ -21,8 +21,13 @@
       </mat-form-field>
       <button mat-flat-button (click)="calcByAddress()" color="primary" class="calc-btn">Calculate</button>
     </div>
-    <p class="address-error" *ngIf="!isValidAddress">Wrong address</p>
+
+    @if (!isValidAddress) {
+      <p class="address-error">Wrong address</p>
+    }
   </mat-tab>
 </mat-tab-group>
 
-<app-voting *ngIf="openVoting" [votedDelegate]="votedDelegate" (simulateVote)="recalculateFromVoting($event)"></app-voting>
+@if (openVoting) {
+  <app-voting [votedDelegate]="votedDelegate" (simulateVote)="recalculateFromVoting($event)"></app-voting>
+}

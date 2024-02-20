@@ -7,17 +7,15 @@
 
     <div>
       <div class="header-links">
-        <ng-container *ngIf="user(); else login">
+        @if (user()) {
           <a routerLink="/profile">Profile</a>
           <span> | </span>
           <a routerLink="/" (click)="onLogout()">Logout</a>
-        </ng-container>
-
-        <ng-template #login>
+        } @else {
           <a routerLink="/login">Login</a>
           <span> | </span>
           <a routerLink="/registration">Registration</a>
-        </ng-template>
+        }
       </div>
 
       <img src="../../../../assets/day-and-night.png"

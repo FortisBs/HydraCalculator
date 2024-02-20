@@ -7,7 +7,6 @@ import { DelegatesService } from "../../shared/services/delegates.service";
 import { LoginResponse, NewDelegate } from "../../shared/models/user.interface";
 import { Observable, switchMap } from "rxjs";
 import { RouterLink } from '@angular/router';
-import { NgIf } from '@angular/common';
 import { MatButton, MatAnchor } from '@angular/material/button';
 import { MatInput } from '@angular/material/input';
 import { MatFormField, MatLabel, MatHint } from '@angular/material/form-field';
@@ -18,7 +17,7 @@ import { MatCard, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.scss'],
   standalone: true,
-  imports: [MatCard, MatCardTitle, MatCardSubtitle, MatCardContent, MatStepper, MatStep, FormsModule, ReactiveFormsModule, MatStepLabel, MatFormField, MatLabel, MatInput, MatButton, NgIf, MatHint, MatAnchor, RouterLink]
+  imports: [MatCard, MatCardTitle, MatCardSubtitle, MatCardContent, MatStepper, MatStep, FormsModule, ReactiveFormsModule, MatStepLabel, MatFormField, MatLabel, MatInput, MatButton, MatHint, MatAnchor, RouterLink]
 })
 export class RegistrationComponent {
   delegateAddress!: string;
