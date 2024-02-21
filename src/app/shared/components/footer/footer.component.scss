@@ -39,3 +39,7 @@ p {
     color: red;
   }
 }
+
+.dialog-content > p {
+  color: var(--mat-table-header-headline-color);
+}

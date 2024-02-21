@@ -17,7 +17,7 @@ export class HydraledgerService {
 
   constructor(private http: HttpClient) {}
 
-  updateDelegateList(list: IDelegate[]) {
+  updateDelegateList(list: IDelegate[]): void {
     this._delegateList.set(list);
   }
 

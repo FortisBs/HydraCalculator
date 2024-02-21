@@ -31,6 +31,8 @@ export class TableComponent {
   constructor(private hydraledgerService: HydraledgerService) {
     effect(() => {
       const delegates: IDelegate[] = this.hydraledgerService.delegateList();
+      this.firstLoad = !delegates.length;
+
       this.firstLoad ? this.fillTable(delegates) : this.refreshTable(delegates);
     });
   }
@@ -69,7 +71,7 @@ export class TableComponent {
     }
   }
 
-  private fillTable(data: IDelegate[]) {
+  private fillTable(data: IDelegate[]): void {
     this.dataSource = new MatTableDataSource(data);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sortData = this.mySort(data, this.sort);
@@ -77,10 +79,9 @@ export class TableComponent {
     this.dataSource.filterPredicate = (data: {username: string}, value:string) => {
       return data.username.trim().toLowerCase().includes(value);
     }
-    this.firstLoad = false;
   }
 
-  private refreshTable(data: IDelegate[]) {
+  private refreshTable(data: IDelegate[]): void {
     this.dataSource.data = data;
     this.table.renderRows();
   }
