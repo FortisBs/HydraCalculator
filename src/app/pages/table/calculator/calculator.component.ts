@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { HydraledgerService } from "../../../shared/services/hydraledger.service";
 import { IDelegate } from "../../../shared/models/delegate.interface";
 import { IWallet } from "../../../shared/models/wallet.interface";
@@ -6,19 +6,15 @@ import { switchMap } from "rxjs";
 import { OwnDelegate } from "../../../shared/models/user.interface";
 import { DelegatesService } from "../../../shared/services/delegates.service";
 import { VotingComponent } from '../voting/voting.component';
-import { MatIcon } from '@angular/material/icon';
-import { MatButton, MatIconButton } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
-import { MatInput } from '@angular/material/input';
-import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
-import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { MaterialModule } from "../../../shared/modules/material.module";
 
 @Component({
   selector: 'app-calculator',
   templateUrl: './calculator.component.html',
-  styleUrls: ['./calculator.component.scss'],
+  styleUrl: './calculator.component.scss',
   standalone: true,
-  imports: [VotingComponent, MatTabGroup, MatTab, MatFormField, MatLabel, MatInput, FormsModule, MatSuffix, MatButton, MatIconButton, MatIcon]
+  imports: [VotingComponent, FormsModule, MaterialModule]
 })
 export class CalculatorComponent implements OnInit {
   hydAmount = 100000;
@@ -27,6 +23,8 @@ export class CalculatorComponent implements OnInit {
   isValidAddress = true;
   openVoting = false;
   delegates: IDelegate[] = [];
+
+  @Output() dataUpdated = new EventEmitter<IDelegate[]>();
 
   constructor(
     private hydraledgerService: HydraledgerService,
@@ -42,7 +40,7 @@ export class CalculatorComponent implements OnInit {
       })
     ).subscribe((data) => {
       this.delegates = this.extendDelegate(data, registeredDelegates);
-      this.hydraledgerService.updateDelegateList(this.delegates);
+      this.updateData();
     });
   }
 
@@ -82,7 +80,7 @@ export class CalculatorComponent implements OnInit {
     this.delegates.forEach((delegate: IDelegate) => {
       delegate.payment = this.calcReward(delegate.votes, delegate.share);
     });
-    this.hydraledgerService.updateDelegateList(this.delegates);
+    this.updateData();
   }
 
   calcByAddress(): void {
@@ -130,6 +128,11 @@ export class CalculatorComponent implements OnInit {
       delegate.payment = this.calcReward(delegate.votes, delegate.share);
     });
     this.votedDelegate = simulatedDelegate;
+    this.updateData();
+  }
+
+  private updateData(): void {
     this.hydraledgerService.updateDelegateList(this.delegates);
+    this.dataUpdated.emit(this.delegates);
   }
 }

@@ -1,40 +1,30 @@
-import { Component, effect, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { IDelegate } from "../../shared/models/delegate.interface";
 import { MatPaginator } from "@angular/material/paginator";
-import { MatSort, MatSortHeader } from "@angular/material/sort";
-import { MatTable, MatTableDataSource, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow } from "@angular/material/table";
-import { HydraledgerService } from "../../shared/services/hydraledger.service";
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatSort } from "@angular/material/sort";
+import { MatTable, MatTableDataSource } from "@angular/material/table";
 import { DecimalPipe, PercentPipe } from '@angular/common';
-import { MatIcon } from '@angular/material/icon';
-import { MatIconButton } from '@angular/material/button';
-import { MatInput } from '@angular/material/input';
-import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
 import { CalculatorComponent } from './calculator/calculator.component';
+import { MaterialModule } from "../../shared/modules/material.module";
 
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
-  styleUrls: ['./table.component.scss'],
+  styleUrl: './table.component.scss',
   standalone: true,
-  imports: [CalculatorComponent, MatFormField, MatLabel, MatInput, MatIconButton, MatSuffix, MatIcon, MatProgressSpinner, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow, MatPaginator, DecimalPipe, PercentPipe]
+  imports: [CalculatorComponent, DecimalPipe, PercentPipe, MaterialModule]
 })
-export class TableComponent {
+export class TableComponent implements AfterViewInit {
   displayedColumns = ['rank', 'delegate', 'share', 'votes', 'daily', 'monthly', 'yearly'];
-  dataSource!: MatTableDataSource<IDelegate>;
-  firstLoad = true;
+  dataSource = new MatTableDataSource<IDelegate>([]);
+  isLoading = true;
 
   @ViewChild(MatTable) table!: MatTable<IDelegate[]>;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private hydraledgerService: HydraledgerService) {
-    effect(() => {
-      const delegates: IDelegate[] = this.hydraledgerService.delegateList();
-      this.firstLoad = !delegates.length;
-
-      this.firstLoad ? this.fillTable(delegates) : this.refreshTable(delegates);
-    });
+  ngAfterViewInit(): void {
+    this.fillTable();
   }
 
   applyFilter(filterValue: string): void {
@@ -44,6 +34,12 @@ export class TableComponent {
   clearFilter(filterInput: HTMLInputElement): void {
     this.dataSource.filter = '';
     filterInput.value = '';
+  }
+
+  refreshTable(data: IDelegate[]): void {
+    this.dataSource.data = data;
+    this.table.renderRows();
+    this.isLoading && (this.isLoading = false);
   }
 
   private compare(a: number | string, b: number | string, isAsc: boolean): number {
@@ -71,18 +67,12 @@ export class TableComponent {
     }
   }
 
-  private fillTable(data: IDelegate[]): void {
-    this.dataSource = new MatTableDataSource(data);
+  private fillTable(): void {
     this.dataSource.paginator = this.paginator;
-    this.dataSource.sortData = this.mySort(data, this.sort);
+    this.dataSource.sortData = this.mySort([], this.sort);
     this.dataSource.sort = this.sort;
     this.dataSource.filterPredicate = (data: {username: string}, value:string) => {
       return data.username.trim().toLowerCase().includes(value);
     }
-  }
-
-  private refreshTable(data: IDelegate[]): void {
-    this.dataSource.data = data;
-    this.table.renderRows();
   }
 }

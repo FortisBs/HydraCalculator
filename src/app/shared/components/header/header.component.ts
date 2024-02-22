@@ -1,17 +1,17 @@
-import {ChangeDetectionStrategy, Component, inject, Signal} from '@angular/core';
-import {ThemeService} from "../../services/theme.service";
-import {AuthService} from "../../services/auth.service";
-import {User} from "../../models/user.interface";
-import {RouterLink} from '@angular/router';
-import {MatToolbar} from '@angular/material/toolbar';
+import { ChangeDetectionStrategy, Component, inject, Signal } from '@angular/core';
+import { ThemeService } from "../../services/theme.service";
+import { AuthService } from "../../services/auth.service";
+import { User } from "../../models/user.interface";
+import { RouterLink } from '@angular/router';
+import { MaterialModule } from "../../modules/material.module";
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
+  styleUrl: './header.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [MatToolbar, RouterLink]
+  imports: [RouterLink, MaterialModule]
 })
 export class HeaderComponent {
   private _themeService: ThemeService = inject(ThemeService);

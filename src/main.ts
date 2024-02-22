@@ -1,19 +1,17 @@
-import { enableProdMode, importProvidersFrom } from '@angular/core';
-
+import { enableProdMode } from '@angular/core';
 import { environment } from './environments/environment';
-import { AppComponent } from './app/app.component';
-import { provideHttpClient } from '@angular/common/http';
-import { AppRoutingModule } from './app/app-routing.module';
-import { provideAnimations } from '@angular/platform-browser/animations';
 import { bootstrapApplication } from '@angular/platform-browser';
+import { AppComponent } from './app/app.component';
+import { PreloadAllModules, provideRouter, withPreloading } from "@angular/router";
+import { appRoutes } from "./app/shared/constants/routes";
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideHttpClient } from '@angular/common/http';
 
-if (environment.production) {
-  enableProdMode();
-}
+environment.production && enableProdMode();
 
 void bootstrapApplication(AppComponent, {
   providers: [
-    importProvidersFrom(AppRoutingModule),
+    provideRouter(appRoutes, withPreloading(PreloadAllModules)),
     provideAnimations(),
     provideHttpClient()
   ]
