@@ -2,22 +2,19 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HydraledgerService } from "../../../shared/services/hydraledger.service";
 import { AuthService } from "../../../shared/services/auth.service";
-import { MatStepper, MatStep, MatStepLabel } from "@angular/material/stepper";
+import { MatStepper } from "@angular/material/stepper";
 import { NewDelegate } from "../../../shared/models/user.interface";
 import { DelegatesService } from "../../../shared/services/delegates.service";
 import { Observable } from "rxjs";
-import { MatInput } from '@angular/material/input';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
-import { MatAnchor, MatButton } from '@angular/material/button';
+import { MaterialModule } from "../../../shared/modules/material.module";
 
 @Component({
   selector: 'app-add-delegate',
   templateUrl: './add-delegate.component.html',
-  styleUrls: ['./add-delegate.component.scss'],
+  styleUrl: './add-delegate.component.scss',
   standalone: true,
-  imports: [MatAnchor, RouterLink, MatCard, MatCardTitle, MatCardContent, MatStepper, MatStep, FormsModule, ReactiveFormsModule, MatStepLabel, MatFormField, MatLabel, MatInput, MatButton]
+  imports: [RouterLink, FormsModule, ReactiveFormsModule, MaterialModule]
 })
 export class AddDelegateComponent {
   delegateAddress!: string;

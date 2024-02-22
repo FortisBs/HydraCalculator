@@ -2,22 +2,19 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HydraledgerService } from "../../shared/services/hydraledger.service";
 import { AuthService } from "../../shared/services/auth.service";
-import { MatStepper, MatStep, MatStepLabel } from "@angular/material/stepper";
+import { MatStepper } from "@angular/material/stepper";
 import { DelegatesService } from "../../shared/services/delegates.service";
 import { LoginResponse, NewDelegate } from "../../shared/models/user.interface";
 import { Observable, switchMap } from "rxjs";
 import { RouterLink } from '@angular/router';
-import { MatButton, MatAnchor } from '@angular/material/button';
-import { MatInput } from '@angular/material/input';
-import { MatFormField, MatLabel, MatHint } from '@angular/material/form-field';
-import { MatCard, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
+import { MaterialModule } from "../../shared/modules/material.module";
 
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
-  styleUrls: ['./registration.component.scss'],
+  styleUrl: './registration.component.scss',
   standalone: true,
-  imports: [MatCard, MatCardTitle, MatCardSubtitle, MatCardContent, MatStepper, MatStep, FormsModule, ReactiveFormsModule, MatStepLabel, MatFormField, MatLabel, MatInput, MatButton, MatHint, MatAnchor, RouterLink]
+  imports: [FormsModule, ReactiveFormsModule, RouterLink, MaterialModule]
 })
 export class RegistrationComponent {
   delegateAddress!: string;

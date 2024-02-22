@@ -1,20 +1,17 @@
 import { Component } from '@angular/core';
 import { AuthService } from "../../shared/services/auth.service";
 import { Router } from "@angular/router";
-import { MatButton } from '@angular/material/button';
-import { MatInput } from '@angular/material/input';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
-import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
+import { MaterialModule } from "../../shared/modules/material.module";
 
 type LoginFormData = { username: string, password: string };
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  styleUrl: './login.component.scss',
   standalone: true,
-  imports: [MatCard, MatCardTitle, MatCardContent, FormsModule, MatFormField, MatLabel, MatInput, MatButton]
+  imports: [FormsModule, MaterialModule]
 })
 export class LoginComponent {
   loginErrorMessage = '';

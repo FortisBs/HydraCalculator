@@ -1,4 +1,4 @@
-<app-calculator></app-calculator>
+<app-calculator (dataUpdated)="refreshTable($event)"></app-calculator>
 
 <div class="container">
   <div class="upper-table">
@@ -12,13 +12,13 @@
   </div>
 
   <div class="mat-elevation-z8 table">
-    @if (firstLoad) {
+    @if (isLoading) {
       <div class="loading-shade">
         <mat-spinner></mat-spinner>
       </div>
     }
 
-    <table mat-table matSort [dataSource]="dataSource" [class.loading]="firstLoad"
+    <table mat-table matSort [dataSource]="dataSource" [class.loading]="isLoading"
            matSortActive="daily" matSortDirection="desc" matSortDisableClear="true">
       <ng-container matColumnDef="rank">
         <th mat-header-cell mat-sort-header="rank" *matHeaderCellDef>Rank</th>
@@ -68,7 +68,7 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
-      @if (!firstLoad) {
+      @if (!isLoading) {
         <tr class="mat-row" *matNoDataRow>
           <td class="mat-cell no-data-text" colspan="7">No delegates matching the filter "{{ filter.value }}"</td>
         </tr>
